@@ -7,7 +7,8 @@ import java.awt.event.ActionListener;
 
 public abstract class Calculator extends JPanel implements ActionListener {
 
-    protected JButton[] przyciskiCyfry;
+    protected JButton[] basicButtons;
+    protected JButton[] functionalButtons;
 
     protected JRadioButton darkColours;
     protected JRadioButton lightColours;
@@ -26,7 +27,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
     public Calculator(){
         Font font2 = new Font("Helvetica", Font.ITALIC, 16);
 
-        przyciskiCyfry = new JButton[12];
+        basicButtons = new JButton[12];
 
         upperPanel = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
