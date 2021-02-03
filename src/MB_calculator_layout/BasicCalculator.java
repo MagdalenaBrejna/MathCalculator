@@ -26,6 +26,8 @@ public class BasicCalculator extends Calculator{
         label = new JLabel(imageIcon);
         panel5.add(label);
 
+        int dlx = 80, dly = 60, x = 20, y = 20;
+
         basicButtons[0] = new BasicButton("1", x, y, new PressReaction(), centerPanel);
         basicButtons[1] = new BasicButton("2", 2*x + dlx, y, new PressReaction(), centerPanel);
         basicButtons[2] = new BasicButton("3", 3*x + 2*dlx, y, new PressReaction(), centerPanel);
@@ -44,7 +46,7 @@ public class BasicCalculator extends Calculator{
         dly = dly *3/4;
         x = x*3/4;
 
-        functionalButtons = new JButton[8];
+        functionalButtons = new JButton[4];
         functionalButtons[0] = new FunctionalButton("+", dlx, dly, x + 5, y, new PressReaction(), centerPanel);
         functionalButtons[1] = new FunctionalButton("-", dlx, dly, 2*x + dlx + 2, y, new PressReaction(), centerPanel);
         functionalButtons[2] = new FunctionalButton("*", dlx, dly, 3*x + 2*dlx + 2, y, new PressReaction(), centerPanel);

@@ -22,8 +22,6 @@ public abstract class Calculator extends JPanel implements ActionListener {
 
     protected Font fontUpperPanel;
 
-    int dlx = 80, dly = 60, x = 20, y = 20;
-
     public Calculator(){
         Font font2 = new Font("Helvetica", Font.ITALIC, 16);
 
@@ -72,7 +70,6 @@ public abstract class Calculator extends JPanel implements ActionListener {
         add(BorderLayout.CENTER, centerPanel);
 
         centerPanel.setLayout(null);
-
     }
 
     public void actionPerformed(ActionEvent pressEvent){
@@ -80,7 +77,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
 
         if(source == darkColours){
             setBackground(new java.awt.Color(220, 220, 220));
-        }else{
+        }else if (source == lightColours){
             setBackground(new java.awt.Color(220, 220, 220));
         }
     }
