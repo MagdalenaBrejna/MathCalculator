@@ -1,5 +1,7 @@
 package MB_calculator_layout;
 
+import MB_calculator_action.BasicEquationCount;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,12 +21,6 @@ public class BasicCalculator extends Calculator{
     public BasicCalculator(){
 
         super();
-        panel5 = new JPanel();
-        add(BorderLayout.SOUTH, panel5);
-
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("/1.jpg"));
-        label = new JLabel(imageIcon);
-        panel5.add(label);
 
         int dlx = 80, dly = 60, x = 20, y = 20;
 
@@ -56,7 +52,7 @@ public class BasicCalculator extends Calculator{
 
     class CountReaction implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            //result = BasicEquation.count();
+            result = BasicEquationCount.count(a,znak,b);
             pole.setText(result);
         }
     }
@@ -113,7 +109,7 @@ public class BasicCalculator extends Calculator{
                         znak = buttonText;
 
                 } else {
-                    //a = BasicEquation.count(a, znak, b);
+                    a = BasicEquationCount.count(a, znak, b);
                     pole.setText(a);
                 }
 

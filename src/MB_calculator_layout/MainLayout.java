@@ -5,10 +5,10 @@ import java.awt.*;
 
 public class MainLayout {
 
-    private static JFrame frame;
-    private static JTabbedPane calculatorTypePanel;
+    private JFrame frame;
+    private JTabbedPane calculatorTypePanel;
 
-    public static void createLayout(){
+    public MainLayout(){
         
         frame = new JFrame("Calculator");
         calculatorTypePanel = new JTabbedPane();
@@ -18,6 +18,7 @@ public class MainLayout {
 
         frame.getContentPane().add(BorderLayout.CENTER, calculatorTypePanel);
 
+        frame.pack();
         frame.setSize(400,600);
         frame.setResizable(false);
         frame.setVisible(true);
