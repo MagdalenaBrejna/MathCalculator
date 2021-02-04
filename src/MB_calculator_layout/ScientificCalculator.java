@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public class ScientificCalculator extends Calculator {
 
     JPanel rightPanel;
+    private JPanel centerPanel;
+
 
     private String text1 = "", text2 = "";
     private ArrayList<String> textList1 = new ArrayList<String>();
@@ -17,6 +19,7 @@ public class ScientificCalculator extends Calculator {
     public ScientificCalculator() {
 
         super();
+        centerPanel = new JPanel();
 
         int dlx = 80, dly = 60, x = 20, y = 20;
 
@@ -56,18 +59,21 @@ public class ScientificCalculator extends Calculator {
         functionalButtons[16] = new FunctionalButton("cos", dlx, dly, 3 * x + 2 * dlx + 2, y, new PressReaction(), rightPanel);
         functionalButtons[17] = new FunctionalButton("tg", dlx, dly, 4 * x + 3 * dlx + 2, y, new PressReaction(), rightPanel);
 
+        centerPanel.setLayout(null);
+        centerPanel.setLocation(30,30);
+        add(BorderLayout.CENTER, centerPanel);
     }
 
     class PressReaction implements ActionListener {
         public void actionPerformed(ActionEvent zdarzenie) {
             String buttonText = ((JButton) zdarzenie.getSource()).getText();
 
-            if (pole.getText().equals("ERROR")) {
+            if (calculatorTextField.getText().equals("ERROR")) {
                 if (buttonText == "DEL")
-                    pole.setText(text1);
+                    calculatorTextField.setText(text1);
                 if (buttonText == "AC") {
                     text1 = "";
-                    pole.setText(text1);
+                    calculatorTextField.setText(text1);
                     textList1.clear();
                 }
             } else {
@@ -86,12 +92,12 @@ public class ScientificCalculator extends Calculator {
                                 } else
                                     text1 = text1.substring(0, text1.length() - 1);
 
-                                pole.setText(text1);
+                                calculatorTextField.setText(text1);
                                 textList1.remove(textList1.size() - 1);
 
                             } else {
                                 czyWynik = false;
-                                pole.setText(text1);
+                                calculatorTextField.setText(text1);
                             }
                         }
                         break;
@@ -100,7 +106,7 @@ public class ScientificCalculator extends Calculator {
                         if (czyWynik)
                             czyWynik = false;
                         text1 = "";
-                        pole.setText(text1);
+                        calculatorTextField.setText(text1);
                         textList1.clear();
                         break;
 
@@ -114,7 +120,7 @@ public class ScientificCalculator extends Calculator {
                         textList1.add("\u221a");
                         text1 += "(";
                         textList1.add("(");
-                        pole.setText(text1);
+                        calculatorTextField.setText(text1);
                         break;
 
                     case ("\u03c0"):
@@ -125,7 +131,7 @@ public class ScientificCalculator extends Calculator {
                             czyWynik = false;
                         }
                         text1 += "\u03c0";
-                        pole.setText(text1);
+                        calculatorTextField.setText(text1);
                         textList1.add("\u03c0");
                         break;
 
@@ -148,10 +154,10 @@ public class ScientificCalculator extends Calculator {
                                 blad = true;
                         }
                         if (blad) {
-                            pole.setText("ERROR");
+                            calculatorTextField.setText("ERROR");
                         } else {
                             czyWynik = true;
-                            pole.setText(text2);
+                            calculatorTextField.setText(text2);
                         }
                         break;
                     default:
@@ -172,7 +178,7 @@ public class ScientificCalculator extends Calculator {
                             text1 += "(";
                             textList1.add("(");
                         }
-                        pole.setText(text1);
+                        calculatorTextField.setText(text1);
 
                         break;
                 }

@@ -12,6 +12,7 @@ public class MainLayout {
         
         frame = new JFrame("Calculator");
         calculatorTypePanel = new JTabbedPane();
+        calculatorTypePanel.setLocation(30,30);
 
         calculatorTypePanel.add("Basic", new BasicCalculator());
         calculatorTypePanel.add("Scientific", new ScientificCalculator());
@@ -19,7 +20,7 @@ public class MainLayout {
         frame.getContentPane().add(BorderLayout.CENTER, calculatorTypePanel);
 
         frame.pack();
-        frame.setSize(400,600);
+        frame.setSize(600,800);
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

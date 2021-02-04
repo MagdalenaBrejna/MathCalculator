@@ -6,11 +6,11 @@ import java.awt.event.ActionListener;
 
 public abstract class Button extends JButton {
 
-    Font font = new Font("Helvetica", Font.ITALIC, 26);
+    Font buttonFont = new Font("Helvetica", Font.ITALIC, 18);
 
-    public Button(String nazwa, ActionListener a){
-        super(nazwa);
-        addActionListener(a);
-        setFont(font);
+    public Button(String textNameButton, ActionListener actionListenerButton){
+        super(textNameButton);
+        addActionListener(actionListenerButton);
+        setFont(buttonFont);
     }
 }

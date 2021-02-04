@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 
 public class FunctionalButton extends Button{
 
-    public FunctionalButton(String nazwa, int dx, int dy, int x, int y, ActionListener a, JPanel p){
-        super(nazwa, a);
-        setBounds(dx,dy,x,y);
-        p.add(this);
+    public FunctionalButton(String textNameButton, int xCoordinate, int yCoordinate, int buttonLength, int buttonHeight, ActionListener actionListenerButton, JPanel panel){
+        super(textNameButton, actionListenerButton);
+        setBounds(xCoordinate, yCoordinate, buttonLength, buttonHeight);
+        panel.add(this);
     }
 }

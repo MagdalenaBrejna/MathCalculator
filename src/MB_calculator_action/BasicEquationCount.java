@@ -2,36 +2,34 @@ package MB_calculator_action;
 
 public class BasicEquationCount {
 
-    public static String count(String a, String znak, String b)
-    {
-        double al = Double.parseDouble(a), bl = Double.parseDouble(b), wl;
-        String w = "";
-        switch(znak)
+    public static String count(String n1, String operationSymbol, String n2) {
+
+        double number1 = Double.parseDouble(n1), number2 = Double.parseDouble(n2), numberResult = 0;
+        String textResult = "";
+
+        switch(operationSymbol)
         {
             case("/"):
-                wl = al/bl;
-                w = String.valueOf(wl);
+                numberResult = (number1 / number2);
                 break;
 
             case("*"):
-                wl = al*bl;
-                w = String.valueOf(wl);
+                numberResult = (number1 * number2);
                 break;
 
             case("-"):
-                wl=al-bl;
-                w=String.valueOf(wl);
+                numberResult = (number1 - number2);
                 break;
 
             case("+"):
-                wl=al+bl;
-                w=String.valueOf(wl);
+                numberResult = (number1 + number2);
                 break;
-
         }
-        if(w.substring(w.length() - 2).equals(".0"))
-            w = w.substring(0,w.length() - 2);
 
-        return w;
+        textResult = String.valueOf(numberResult);
+        if(textResult.substring(textResult.length() - 2).equals(".0"))
+            textResult = textResult.substring(0,textResult.length() - 2);
+
+        return textResult;
     }
 }
