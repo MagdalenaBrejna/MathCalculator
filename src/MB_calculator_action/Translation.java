@@ -4,55 +4,54 @@ import java.util.ArrayList;
 
 public class Translation {
 
-    public static ArrayList<String> translate(ArrayList<String> x)
-    {
-        ArrayList<String> wyr = new ArrayList<String>();
-        String a = "";
-        boolean blad = false;
+    public static int countDots(String text){
+        int dotNumber = 0;
+        for(int textPosition = 0; textPosition < text.length(); textPosition++)
+            if(text.charAt(textPosition) == '.')
+                dotNumber++;
+        return dotNumber;
+    }
 
-        for(int j = 0; j < x.size(); j++)
-        {
-            if((x.get(j).charAt(0) >= '0' && x.get(j).charAt(0) <= '9') || x.get(j).equals("."))
-                a += x.get(j);
+    public static ArrayList<String> createEntireNumbers(ArrayList<String> listText) {
+
+        ArrayList<String> newListText = new ArrayList<String>();
+        String stringText = "";
+        boolean ifError = false;
+
+        for(int listPosition = 0; listPosition < listText.size(); listPosition++) {
+
+            if((listText.get(listPosition).charAt(0) >= '0' && listText.get(listPosition).charAt(0) <= '9') || listText.get(listPosition).equals("."))
+                stringText += listText.get(listPosition);
             else {
-                if(!(a.equals(""))) {
-                    if(a.equals("."))
-                        a = "0";
-                    else {
-                        int ile = 0;
-                        for(int k = 0; k < a.length(); k++)
-                            if(a.charAt(k) == '.')
-                                ile++;
-                        if(ile > 1)
-                            blad = true;
-                    }
-                    wyr.add(a);
-                    a = "";
+                if(!(stringText.equals(""))) {
+                    if(stringText.equals("."))
+                        stringText = "0";
+                    else if(countDots(stringText) > 1)
+                        ifError = true;
 
-                } else if(x.get(j).equals("-"))
-                    a += x.get(j);
+                    newListText.add(stringText);
+                    stringText = "";
 
-                if(a == "")
-                    wyr.add(x.get(j));
+                } else if(listText.get(listPosition).equals("-"))
+                    stringText += listText.get(listPosition);
+
+                if(stringText == "")
+                    newListText.add(listText.get(listPosition));
             }
         }
 
-        if(!(a.equals(""))) {
-            if(a.equals("."))
-                a = "0";
-            else {
-                int ile = 0;
-                for(int k = 0; k < a.length(); k++)
-                    if(a.charAt(k) == '.')
-                        ile++;
-                if(ile > 1)
-                    blad = true;
-            }
-            wyr.add(a);
-            a = "";
+        if(!(stringText.equals(""))) {
+            if(stringText.equals("."))
+                stringText = "0";
+            else if(countDots(stringText) > 1)
+                ifError = true;
+            newListText.add(stringText);
+            stringText = "";
         }
-        if(blad)
-            wyr.clear();
-        return wyr;
+
+        if(ifError)
+            newListText.clear();
+
+        return newListText;
     }
 }

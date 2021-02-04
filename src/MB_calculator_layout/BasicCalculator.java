@@ -13,6 +13,7 @@ public class BasicCalculator extends Calculator{
     public BasicCalculator(){
 
         super();
+        centerPanel.setLocation(60,300);
 
         int dlx = 80, dly = 60, x = 50, y = 40;
 
@@ -61,7 +62,7 @@ public class BasicCalculator extends Calculator{
             calculatorTextField.setText(text);
         }
     }
-    
+
     class PressReaction implements ActionListener{
         public void actionPerformed(ActionEvent pressEvent){
 

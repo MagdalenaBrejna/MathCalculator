@@ -1,5 +1,8 @@
 package MB_calculator_layout;
 
+import MB_calculator_action.ONP;
+import MB_calculator_action.Translation;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,20 +11,28 @@ import java.util.ArrayList;
 
 public class ScientificCalculator extends Calculator {
 
-    JPanel rightPanel;
-    private JPanel centerPanel;
+    private JPanel rightPanel;
 
+    private ArrayList<String> textList = new ArrayList<String>();
 
-    private String text1 = "", text2 = "";
-    private ArrayList<String> textList1 = new ArrayList<String>();
-    private boolean czyWynik = false;
+    private boolean ifReady = false;
+
+    private String textONP = "";
 
     public ScientificCalculator() {
 
         super();
-        centerPanel = new JPanel();
 
-        int dlx = 80, dly = 60, x = 20, y = 20;
+        centerPanel.setPreferredSize(new Dimension(320,500));
+        centerPanel.setLocation(0,300);
+
+        rightPanel = new JPanel();
+        rightPanel.setPreferredSize(new Dimension(200,500));
+        rightPanel.setLocation(510,300);
+        rightPanel.setLayout(null);
+        add(BorderLayout.EAST, rightPanel);
+
+        int dlx = 88, dly = 60, x = 20, y = 20;
 
         basicButtons[0] = new BasicButton("1", x, y, new PressReaction(), centerPanel);
         basicButtons[1] = new BasicButton("2", 2 * x + dlx, y, new PressReaction(), centerPanel);
@@ -32,153 +43,162 @@ public class ScientificCalculator extends Calculator {
         basicButtons[6] = new BasicButton("7", x, 3 * y + 2 * dly, new PressReaction(), centerPanel);
         basicButtons[7] = new BasicButton("8", 2 * x + dlx, 3 * y + 2 * dly, new PressReaction(), centerPanel);
         basicButtons[8] = new BasicButton("9", 3 * x + 2 * dlx, 3 * y + 2 * dly, new PressReaction(), centerPanel);
-        basicButtons[9] = new BasicButton("=", x, 4 * y + 3 * dly, new PressReaction(), centerPanel);
+        basicButtons[9] = new BasicButton("=", x, 4 * y + 3 * dly, new countReaction(), centerPanel);
         basicButtons[10] = new BasicButton("0", 2 * x + dlx, 4 * y + 3 * dly, new PressReaction(), centerPanel);
         basicButtons[11] = new BasicButton(".", 3 * x + 2 * dlx, 4 * y + 3 * dly, new PressReaction(), centerPanel);
 
+        x = 20;
+        y = 20;
+        dlx = 60;
+        dly = 45;
+
         functionalButtons = new FunctionalButton[18];
-        rightPanel = new JPanel();
-        add(BorderLayout.EAST, rightPanel);
+        functionalButtons[0] = new FunctionalButton("+", x + 20, y, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[1] = new FunctionalButton("-", 2*x + dlx + 20, y, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[2] = new FunctionalButton("*", x + 20, 2*y + dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[3] = new FunctionalButton("/", 2*x + dlx + 20, 2*y + dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[4] = new FunctionalButton("(", x + 20, 3*y + 2*dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[5] = new FunctionalButton(")", 2*x + dlx + 20, 3*y + 2*dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[6] = new FunctionalButton(",", x + 20, 4*y + 3*dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[7] = new FunctionalButton("^", 2*x + dlx + 20, 4*y + 3*dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[8] = new FunctionalButton("\u221a", x + 20, 5*y + 4*dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[9] = new FunctionalButton("\u03c0", 2*x + dlx + 20, 5*y + 4*dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[10] = new FunctionalButton("log", x + 20, 6*y + 5*dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[11] = new FunctionalButton("ln", 2*x + dlx + 20, 6*y + 5*dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[12] = new FunctionalButton("e",  x, 6*y + 5*dly, dlx, dly, new PressReaction(), centerPanel);
+        functionalButtons[13] = new FunctionalButton("sin", 2*x + dlx - 2, 6*y + 5*dly, dlx, dly, new PressReaction(), centerPanel);
+        functionalButtons[14] = new FunctionalButton("cos", 3*x + 2*dlx - 2, 6*y + 5*dly, dlx, dly, new PressReaction(), centerPanel);
+        functionalButtons[15] = new FunctionalButton("tg", 4*x + 3*dlx - 2, 6*y + 5*dly, dlx, dly, new PressReaction(), centerPanel);
+        functionalButtons[16] = new FunctionalButton("<<", 2*x + dlx, 7*y + 6*dly, dlx, dly, new DELReaction(), centerPanel);
+        functionalButtons[17] = new FunctionalButton("AC", 3*x + 2*dlx, 7*y + 6*dly, dlx, dly, new ACReaction(), centerPanel);
+    }
 
-        functionalButtons[0] = new FunctionalButton("+", dlx, dly, x + 5, y, new PressReaction(), rightPanel);
-        functionalButtons[1] = new FunctionalButton("-", dlx, dly, 2 * x + dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[2] = new FunctionalButton("*", dlx, dly, 3 * x + 2 * dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[3] = new FunctionalButton("/", dlx, dly, 4 * x + 3 * dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[4] = new FunctionalButton("(", dlx, dly, x + 5, y, new PressReaction(), rightPanel);
-        functionalButtons[5] = new FunctionalButton(")", dlx, dly, 2 * x + dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[6] = new FunctionalButton("DEL", dlx, dly, 3 * x + 2 * dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[7] = new FunctionalButton("AC", dlx, dly, 4 * x + 3 * dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[8] = new FunctionalButton(",", dlx, dly, x + 5, y, new PressReaction(), rightPanel);
-        functionalButtons[9] = new FunctionalButton("^", dlx, dly, 2 * x + dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[10] = new FunctionalButton("\u221a", dlx, dly, 3 * x + 2 * dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[11] = new FunctionalButton("\u03c0", dlx, dly, 4 * x + 3 * dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[12] = new FunctionalButton("log", dlx, dly, 3 * x + 2 * dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[13] = new FunctionalButton("ln", dlx, dly, 4 * x + 3 * dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[14] = new FunctionalButton("e", dlx, dly, 3 * x + 2 * dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[15] = new FunctionalButton("sin", dlx, dly, 4 * x + 3 * dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[16] = new FunctionalButton("cos", dlx, dly, 3 * x + 2 * dlx + 2, y, new PressReaction(), rightPanel);
-        functionalButtons[17] = new FunctionalButton("tg", dlx, dly, 4 * x + 3 * dlx + 2, y, new PressReaction(), rightPanel);
+    class DELReaction implements ActionListener{
+        public void actionPerformed(ActionEvent DELEvent){
 
-        centerPanel.setLayout(null);
-        centerPanel.setLocation(30,30);
-        add(BorderLayout.CENTER, centerPanel);
+            if (text != "") {
+                if (!ifReady) {
+                    char lastCharacter = text.charAt(text.length() - 1);
+                    if (lastCharacter >= 'g' && lastCharacter <= 's') {
+                        String last2Characters = text.substring(text.length() - 2);
+                        if (last2Characters.equals("ln") || last2Characters.equals("tg"))
+                            text = text.substring(0, text.length() - 2);
+                        else
+                            text = text.substring(0, text.length() - 3);
+
+                    } else
+                        text = text.substring(0, text.length() - 1);
+
+                    calculatorTextField.setText(text);
+                    textList.remove(textList.size() - 1);
+
+                } else {
+                    ifReady = false;
+                    calculatorTextField.setText(text);
+                }
+            }
+        }
+    }
+
+    class ACReaction implements ActionListener{
+        public void actionPerformed(ActionEvent ACEvent){
+            ifReady = false;
+            text = "";
+            calculatorTextField.setText(text);
+            textList.clear();
+        }
+    }
+
+    class countReaction implements ActionListener{
+        public void actionPerformed(ActionEvent countEvent){
+
+            ArrayList<String> textList2 = new ArrayList<String>();
+            textONP = "";
+            boolean error = false;
+
+            if (textList.size() > 0) {
+                textList2 = Translation.createEntireNumbers(textList);
+                if (textList2.size() > 0) {
+                    textList2 = ONP.convertTextToONP(textList2);
+                    if (textList2.size() > 0) {
+                        textONP = ONP.Oblicz(textList2);
+                        if (textONP == "")
+                            error = true;
+                    } else
+                        error = true;
+                } else
+                    error = true;
+            }
+
+            if (error) {
+                calculatorTextField.setText("ERROR");
+            } else {
+                ifReady = true;
+                calculatorTextField.setText(textONP);
+            }
+        }
     }
 
     class PressReaction implements ActionListener {
-        public void actionPerformed(ActionEvent zdarzenie) {
-            String buttonText = ((JButton) zdarzenie.getSource()).getText();
+        public void actionPerformed(ActionEvent pressEvent) {
+
+            String buttonText = ((JButton) pressEvent.getSource()).getText();
 
             if (calculatorTextField.getText().equals("ERROR")) {
-                if (buttonText == "DEL")
-                    calculatorTextField.setText(text1);
-                if (buttonText == "AC") {
-                    text1 = "";
-                    calculatorTextField.setText(text1);
-                    textList1.clear();
+                if (buttonText == "<<")
+                    calculatorTextField.setText(text);
+                else if (buttonText == "AC") {
+                    text = "";
+                    calculatorTextField.setText(text);
+                    textList.clear();
                 }
+
             } else {
                 switch (buttonText) {
-                    case ("DEL"):
-                        if (text1.length() > 0) {
-                            if (!czyWynik) {
-                                char character = text1.charAt(text1.length() - 1);
-                                if (character >= 'g' && character <= 's') {
-                                    String character2 = text1.substring(text1.length() - 2);
-
-                                    if (character2.equals("ln") || character2.equals("tg"))
-                                        text1 = text1.substring(0, text1.length() - 2);
-                                    else
-                                        text1 = text1.substring(0, text1.length() - 3);
-                                } else
-                                    text1 = text1.substring(0, text1.length() - 1);
-
-                                calculatorTextField.setText(text1);
-                                textList1.remove(textList1.size() - 1);
-
-                            } else {
-                                czyWynik = false;
-                                calculatorTextField.setText(text1);
-                            }
-                        }
-                        break;
-
-                    case ("AC"):
-                        if (czyWynik)
-                            czyWynik = false;
-                        text1 = "";
-                        calculatorTextField.setText(text1);
-                        textList1.clear();
-                        break;
-
                     case ("\u221a"):
-                        if (czyWynik) {
-                            text1 = "";
-                            textList1.clear();
-                            czyWynik = false;
+                        if (ifReady) {
+                            text = "";
+                            textList.clear();
+                            ifReady = false;
                         }
-                        text1 += "\u221a";
-                        textList1.add("\u221a");
-                        text1 += "(";
-                        textList1.add("(");
-                        calculatorTextField.setText(text1);
+                        text += "\u221a";
+                        textList.add("\u221a");
+                        text += "(";
+                        textList.add("(");
+                        calculatorTextField.setText(text);
                         break;
 
                     case ("\u03c0"):
 
-                        if (czyWynik) {
-                            text1 = "";
-                            textList1.clear();
-                            czyWynik = false;
+                        if (ifReady) {
+                            text = "";
+                            textList.clear();
+                            ifReady = false;
                         }
-                        text1 += "\u03c0";
-                        calculatorTextField.setText(text1);
-                        textList1.add("\u03c0");
+                        text += "\u03c0";
+                        calculatorTextField.setText(text);
+                        textList.add("\u03c0");
                         break;
 
-                    case ("="):
-
-                        ArrayList<String> textList2 = new ArrayList<String>();
-                        text2 = "";
-                        boolean blad = false;
-                        if (textList1.size() > 0) {
-                            //textList2 = Porzadkowanie.Porz(textList1);
-                            if (textList2.size() > 0) {
-                                //textList2 = ONP.Przeksztalc(textList2);
-                                if (textList2.size() > 0) {
-                                    //text2 = ONP.Oblicz(textList2);
-                                    if (text2 == "")
-                                        blad = true;
-                                } else
-                                    blad = true;
-                            } else
-                                blad = true;
-                        }
-                        if (blad) {
-                            calculatorTextField.setText("ERROR");
-                        } else {
-                            czyWynik = true;
-                            calculatorTextField.setText(text2);
-                        }
-                        break;
                     default:
-                        if (czyWynik) {
-                            czyWynik = false;
+                        if (ifReady) {
+                            ifReady = false;
                             if (!(buttonText == "+" || buttonText == "-" || buttonText == "*" || buttonText == "/" || buttonText == "^")) {
-                                text1 = "";
-                                textList1.clear();
+                                text = "";
+                                textList.clear();
                             } else {
-                                text1 = text2;
-                                textList1.clear();
-                                textList1.add(text1);
+                                text = textONP;
+                                textList.clear();
+                                textList.add(text);
                             }
                         }
-                        text1 += buttonText;
-                        textList1.add(buttonText);
+                        text += buttonText;
+                        textList.add(buttonText);
                         if (buttonText == "ln" || buttonText == "sin" || buttonText == "cos" || buttonText == "tg" || buttonText == "log") {
-                            text1 += "(";
-                            textList1.add("(");
+                            text += "(";
+                            textList.add("(");
                         }
-                        calculatorTextField.setText(text1);
+                        calculatorTextField.setText(text);
 
                         break;
                 }

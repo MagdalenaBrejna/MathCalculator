@@ -72,7 +72,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
         centerPanel = new JPanel();
         centerPanel.setLayout(null);
         centerPanel.setPreferredSize(new Dimension(450,600));
-        centerPanel.setLocation(60,300);
+
         add(BorderLayout.CENTER, centerPanel);
 
     }

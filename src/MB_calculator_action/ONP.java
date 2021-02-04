@@ -5,178 +5,154 @@ import java.util.Stack;
 
 public class ONP {
 
-    public static ArrayList<String> Przeksztalc(ArrayList<String> x)
-    {
-        ArrayList<String> w = new ArrayList<String>();
-        Stack<String> stos = new Stack<String>();
-        int i = 0;
-        boolean blad = false;
+    public static int priorytet(String operator) {
 
-        while(i < x.size() && !blad)
-        {
-            String a = x.get(i);
-
-            if(a == "log" || a == "ln" || a == "sin" || a == "cos" || a == "tg" || a == "\u221a")
-                stos.add(a);
-            else {
-                if(a == ",") {
-                    while(!stos.empty() && !(stos.peek() == "(")) {
-                        w.add(stos.peek());
-                        stos.pop();
-                    }
-                    if(stos.empty())
-                        blad = true;
-
-                } else {
-                    if(a == "+" || a == "-" || a == "*" || a == "/" || a == "^") {
-                        if(a == "^") {
-                            while(!stos.empty() && stos.peek() == "^") {
-                                w.add(stos.peek());
-                                stos.pop();
-                            }
-
-                        } else if(a == "*" || a == "/") {
-
-                            while(!stos.empty() && (stos.peek() == "*" || stos.peek() == "/" || stos.peek() == "^")) {
-                                w.add(stos.peek());
-                                stos.pop();
-                            }
-
-                        }else if(a == "+" || a == "-") {
-
-                            while(!stos.empty() && (stos.peek() == "+" || stos.peek() == "-" || stos.peek() == "*" || stos.peek() == "/" || stos.peek() == "^")) {
-                                w.add(stos.peek());
-                                stos.pop();
-                            }
-                        }
-                        stos.add(a);
-
-                    } else {
-
-                        if(a == "(") {
-                            stos.add(a);
-                        } else {
-                            if(a == ")") {
-                                while(!stos.empty() && !(stos.peek() == "(")) {
-                                    w.add(stos.peek());
-                                    stos.pop();
-                                }
-                                if(stos.empty())
-                                    blad = true;
-
-                                else {
-                                    stos.pop();
-                                    if(!stos.empty() && (stos.peek() == "log" || stos.peek() == "ln" || stos.peek() == "sin" || stos.peek() == "cos" || stos.peek() == "tg" || stos.peek() == "\u221a")) {
-                                        w.add(stos.peek());
-                                        stos.pop();
-                                    }
-                                }
-
-                            } else
-                                w.add(a);
-                        }
-                    }
-                }
-            }
-            i++;
-        }
-
-        while(!stos.empty() && !blad)
-        {
-            if((stos.peek() == "log" || stos.peek() == "ln" || stos.peek() == "sin" || stos.peek() == "cos" || stos.peek() == "tg" || stos.peek() == "\u221a"|| stos.peek() == "("))
-                blad = true;
-            else {
-                w.add(stos.peek());
-                stos.pop();
-            }
-        }
-
-        if(blad)
-            w.clear();
-
-        return w;
+        if(operator.equals("+") || operator.equals("-"))
+            return 1;
+        else if(operator.equals("*") || operator.equals("/"))
+            return 2;
+        else if(operator.equals("^"))
+            return 3;
+        else
+            return 0;
     }
 
-    public static String Oblicz( ArrayList<String> x) {
-        Stack<Double> stos=new Stack<Double>();
-        double b, c;
-        int i = 0;
-        boolean blad = false;
-        String w = "";
+    public static ArrayList<String> convertTextToONP(ArrayList<String> textList) {
 
-        while(i < x.size() && !blad)
-        {
-            String a = x.get(i);
-            if(a == "ln" || a == "sin" || a == "cos" || a == "tg" || a == "\u221a")
-            {
-                if(stos.empty())
-                    blad = true;
-                else
-                {
-                    b = stos.peek();
-                    stos.pop();
+        ArrayList<String> textListONP = new ArrayList<String>();
+        Stack<String> stackSymbols = new Stack<String>();
+        int textPosition = 0;
+        boolean error = false;
 
-                    if(a == "ln")
-                        stos.add(Math.log(b));
-                    if(a == "sin")
-                        stos.add(Math.sin(b));
-                    if(a == "cos")
-                        stos.add(Math.cos(b));
-                    if(a == "tg")
-                        stos.add(Math.tan(b));
-                    if(a == "\u221a")
-                        stos.add(Math.sqrt(b));
-                }
-            } else {
+        while(textPosition < textList.size() && !error) {
+            String symbol = textList.get(textPosition);
 
-                if(a == "+" || a == "-" || a == "*" || a == "/" || a == "^" || a == "log") {
-                    if(stos.size() < 2)
-                        blad = true;
-                    else {
-                        c = stos.peek();
-                        stos.pop();
-                        b = stos.peek();
-                        stos.pop();
-
-                        if(a == "+")
-                            stos.add(b + c);
-                        if(a == "-")
-                            stos.add(b - c);
-                        if(a == "*")
-                            stos.add(b * c);
-                        if(a == "/")
-                            stos.add(b / c);
-                        if(a == "^")
-                            stos.add(Math.pow(b, c));
-                        if(a == "log")
-                            stos.add(Math.log(c) / Math.log(b));
+            if(symbol.equals("log") || symbol.equals("ln") || symbol.equals("sin") || symbol.equals("cos") || symbol.equals("tg") || symbol.equals("\u221a"))
+                stackSymbols.add(symbol);
+            else {
+                if(symbol == ",") {
+                    while(!stackSymbols.empty() && !(stackSymbols.peek() == "(")) {
+                        textListONP.add(stackSymbols.peek());
+                        stackSymbols.pop();
                     }
+                    if(stackSymbols.empty())
+                        error = true;
+
                 } else {
+                    if(symbol.equals("+") || symbol.equals("-") || symbol.equals("*") || symbol.equals("/") || symbol.equals("^")) {
+                        while(!stackSymbols.empty() && priorytet(stackSymbols.peek()) >= priorytet(symbol))
+                            textListONP.add(stackSymbols.pop());
+                        stackSymbols.push(symbol);
 
-                    if(a == "e")
-                        stos.add(Math.E);
-                    else {
-                        if(a == "\u03c0")
-                            stos.add(Math.PI);
-                        else
-                            stos.add(Double.parseDouble(a));
-                    }
+                    } else if(symbol == "(") {
+                        stackSymbols.push(symbol);
+
+                    } else if(symbol == ")") {
+                        while (!stackSymbols.empty() && !(stackSymbols.peek() == "("))
+                            textListONP.add(stackSymbols.pop());
+
+                        if (stackSymbols.empty())
+                            error = true;
+                        else {
+                            stackSymbols.pop();
+                            if(!stackSymbols.empty() && (stackSymbols.peek() == "log" || stackSymbols.peek() == "ln" || stackSymbols.peek() == "sin" || stackSymbols.peek() == "cos" || stackSymbols.peek() == "tg" || stackSymbols.peek() == "\u221a"))
+                                textListONP.add(stackSymbols.pop());
+                        }
+                    } else
+                        textListONP.add(symbol);
                 }
             }
-            i++;
+            textPosition++;
         }
 
-        if(stos.size() != 1)
-            blad = true;
+        while(!stackSymbols.empty() && !error) {
+            if((stackSymbols.peek().equals("log") || stackSymbols.peek().equals("ln") || stackSymbols.peek().equals("sin") || stackSymbols.peek().equals("cos") || stackSymbols.peek().equals("tg") || stackSymbols.peek().equals("\u221a") || stackSymbols.peek().equals(")")))
+                error = true;
+            else {
+                textListONP.add(stackSymbols.pop());
+                //stackSymbols.pop();
+            }
+        }
 
-        if(blad)
+        if(error)
+            textListONP.clear();
+
+        return textListONP;
+    }
+
+    public static String Oblicz( ArrayList<String> textListONP) {
+
+        Stack<Double> stackSymbols = new Stack<Double>();
+        double number1, number2;
+        int position = 0;
+        boolean error = false;
+        String result = "";
+
+        while(position < textListONP.size() && !error) {
+            String symbol = textListONP.get(position);
+
+            if (symbol.equals("ln") || symbol.equals("sin") || symbol.equals("cos") || symbol.equals("tg") || symbol.equals("\u221a")) {
+                if (stackSymbols.empty())
+                    error = true;
+                else {
+                    number1 = stackSymbols.peek();
+                    stackSymbols.pop();
+
+                    if (symbol == "ln")
+                        stackSymbols.add(Math.log(number1));
+                    if (symbol == "sin")
+                        stackSymbols.add(Math.sin(number1));
+                    if (symbol == "cos")
+                        stackSymbols.add(Math.cos(number1));
+                    if (symbol == "tg")
+                        stackSymbols.add(Math.tan(number1));
+                    if (symbol == "\u221a")
+                        stackSymbols.add(Math.sqrt(number1));
+                }
+
+            } else if (symbol.equals("+") || symbol.equals("-") || symbol.equals("*") || symbol.equals("/") || symbol.equals("^") || symbol.equals("log")) {
+                if (stackSymbols.size() < 2)
+                    error = true;
+                else {
+                    number2 = stackSymbols.peek();
+                    stackSymbols.pop();
+                    number1 = stackSymbols.peek();
+                    stackSymbols.pop();
+
+                    if (symbol == "+")
+                        stackSymbols.add(number1 + number2);
+                    if (symbol == "-")
+                        stackSymbols.add(number1 - number2);
+                    if (symbol == "*")
+                        stackSymbols.add(number1 * number2);
+                    if (symbol == "/")
+                        stackSymbols.add(number1 / number2);
+                    if (symbol == "^")
+                        stackSymbols.add(Math.pow(number1, number2));
+                    if (symbol == "log")
+                        stackSymbols.add(Math.log(number2) / Math.log(number1));
+                }
+            } else if (symbol == "e") {
+                stackSymbols.add(Math.E);
+            } else if (symbol == "\u03c0") {
+                stackSymbols.add(Math.PI);
+            } else {
+                stackSymbols.add(Double.parseDouble(symbol));
+            }
+
+            position++;
+        }
+
+        if(stackSymbols.size() != 1)
+            error = true;
+
+        if(error)
             return "";
 
-        w = String.valueOf(stos.peek());
-        if(w.substring(w.length() - 2).equals(".0"))
-        {
-            w = w.substring(0, w.length() - 2);
-        }
-        return w;
+        result = String.valueOf(stackSymbols.peek());
+        if(result.substring(result.length() - 2).equals(".0"))
+            result = result.substring(0, result.length() - 2);
+
+        return result;
     }
 }
