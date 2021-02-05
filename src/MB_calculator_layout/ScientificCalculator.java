@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ScientificCalculator extends Calculator {
@@ -111,8 +112,8 @@ public class ScientificCalculator extends Calculator {
                 calculatorTextField.setText("ERROR");
              else {
                 ifReady = true;
-                textONP = TextResultPreparations.countResult(textList);
-                calculatorTextField.setText(TextResultPreparations.countResult(textList));
+                textONP = calculatorResultField.getText();
+                calculatorTextField.setText(textONP);
             }
         }
     }

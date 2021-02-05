@@ -33,7 +33,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
 
     public Calculator(){
 
-        fontUpperPanel = new Font("Helvetica", Font.ITALIC, 16);
+        fontUpperPanel = new Font("Helvetica", Font.ITALIC, 18);
         loweredLevelBorder = BorderFactory.createLoweredBevelBorder();
         setBackground(new java.awt.Color(238, 238, 238));
 

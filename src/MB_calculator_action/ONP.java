@@ -1,9 +1,12 @@
 package MB_calculator_action;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Stack;
 
 public class ONP {
+
+    private static DecimalFormat df = new DecimalFormat("#.######");
 
     public static int priority(String operator) {
 
@@ -65,8 +68,6 @@ public class ONP {
             }
         }
 
-        if(stackSymbols.contains("("))
-            error = true;
 
         while(!stackSymbols.empty() && !error) {
             if((stackSymbols.peek().equals("log") || stackSymbols.peek().equals("ln") || stackSymbols.peek().equals("sin") || stackSymbols.peek().equals("cos") ||
@@ -81,6 +82,9 @@ public class ONP {
             }
         }
 
+        if(stackSymbols.contains("("))
+            error = true;
+
         if(error)
             textListONP.clear();
 
@@ -92,7 +96,6 @@ public class ONP {
         Stack<Double> stackSymbols = new Stack<Double>();
         double number1, number2;
         boolean error = false;
-        String result = "";
 
         for(String symbol: textListONP){
             if(!error) {
@@ -131,7 +134,10 @@ public class ONP {
                         else if (symbol.equals("*"))
                             stackSymbols.add(number1 * number2);
                         else if (symbol.equals("/"))
-                            stackSymbols.add(number1 / number2);
+                            if(number2 != 0)
+                                stackSymbols.add(number1 / number2);
+                            else
+                                error = true;
                         else if (symbol.equals("^"))
                             stackSymbols.add(Math.pow(number1, number2));
                         else if (symbol.equals("log"))
@@ -154,10 +160,6 @@ public class ONP {
         if(error)
             return "";
 
-        result = String.valueOf(stackSymbols.peek());
-        if(result.substring(result.length() - 2).equals(".0"))
-            result = result.substring(0, result.length() - 2);
-
-        return result;
+        return (df.format(Double.valueOf(stackSymbols.peek()))).replace(",",".");
     }
 }

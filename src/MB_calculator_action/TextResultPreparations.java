@@ -75,8 +75,9 @@ public class TextResultPreparations {
                     newListText.add(stringText);
                     stringText = "";
 
-                } else if(listText.get(listPosition).equals("-"))
-                    stringText += listText.get(listPosition);
+                } else if(listPosition < (listText.size() - 2))
+                    if(listText.get(listPosition).equals("-") && listText.get(listPosition - 1).equals("(") )
+                        stringText += listText.get(listPosition);
 
                 if(stringText.equals(""))
                     newListText.add(listText.get(listPosition));
