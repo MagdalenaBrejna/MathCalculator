@@ -15,7 +15,7 @@ public class BasicCalculator extends Calculator{
         super();
         centerPanel.setLocation(60,300);
 
-        int dlx = 80, dly = 60, x = 50, y = 40;
+        int dlx = 80, dly = 60, x = 50, y = 20;
 
         basicButtons[0] = new BasicButton("1", x, y, new PressReaction(), centerPanel);
         basicButtons[1] = new BasicButton("2", 2*x + dlx, y, new PressReaction(), centerPanel);
@@ -33,7 +33,7 @@ public class BasicCalculator extends Calculator{
         dlx = 60;
         dly = 45;
         x = 37;
-        y = 440;
+        y = 360;
 
         functionalButtons = new JButton[6];
         functionalButtons[0] = new FunctionalButton("+", x+13, y, dlx, dly, new PressReaction(), centerPanel);
@@ -50,9 +50,14 @@ public class BasicCalculator extends Calculator{
 
     class CountReaction implements ActionListener{
         public void actionPerformed(ActionEvent e){
+
             number2 = text;
-            result = BasicEquationCount.count(number1, operationSymbol, number2);
+            if(!number1.equals(""))
+                result = BasicEquationCount.count(number1, operationSymbol, number2);
+            else
+                result = number2;
             calculatorTextField.setText(result);
+            calculatorResultField.setText(result);
             text = "";
             number1 = "";
             number2 = "";
@@ -61,9 +66,11 @@ public class BasicCalculator extends Calculator{
 
     class ACReaction implements ActionListener{
         public void actionPerformed(ActionEvent ACEvent){
+
             text = "";
             operationSymbol = "";
             calculatorTextField.setText(text);
+            calculatorResultField.setText(text);
         }
     }
 
@@ -86,9 +93,10 @@ public class BasicCalculator extends Calculator{
                     calculatorTextField.setText(text);
                 }
 
-            }else if(buttonText == "/" || buttonText == "*" || buttonText == "-" || buttonText == "+") {
-                if(text != ""){
+            }else if(buttonText.equals("/") || buttonText.equals("*") || buttonText.equals("-") || buttonText.equals("+")) {
+                if(!text.equals("")){
                     number1 = text;
+                    calculatorResultField.setText(number1);
                     operationSymbol = buttonText;
                     text = "";
                 }

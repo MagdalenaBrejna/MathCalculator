@@ -74,6 +74,33 @@ public class ScientificCalculator extends Calculator {
         functionalButtons[17].setBackground(new java.awt.Color(245, 197, 174));
     }
 
+    public void presentPartResults(){
+        ArrayList<String> textList2 = new ArrayList<String>();
+        textONP = "";
+        boolean error = false;
+
+        if (textList.size() > 0) {
+            textList2 = Translation.createEntireNumbers(textList);
+            if (textList2.size() > 0) {
+                textList2 = ONP.convertTextToONP(textList2);
+                if (textList2.size() > 0) {
+                    textONP = ONP.Oblicz(textList2);
+                    if (textONP == "")
+                        error = true;
+                } else
+                    error = true;
+            } else
+                error = true;
+        }
+
+        if (error) {
+            calculatorResultField.setText("");
+        } else {
+            calculatorResultField.setText(textONP);
+        }
+    }
+
+
     class DELReaction implements ActionListener{
         public void actionPerformed(ActionEvent DELEvent){
 
@@ -203,6 +230,7 @@ public class ScientificCalculator extends Calculator {
 
                         break;
                 }
+                presentPartResults();
             }
         }
     }
