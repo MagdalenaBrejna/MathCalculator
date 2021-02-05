@@ -16,12 +16,18 @@ public class TextResultPreparations {
     public static String returnPreviousText(String text){
 
         char lastCharacter = text.charAt(text.length() - 1);
-        if (lastCharacter >= 'g' && lastCharacter <= 's') {
-            String last2Characters = text.substring(text.length() - 2);
-            if (last2Characters.equals("ln") || last2Characters.equals("tg"))
-                text = text.substring(0, text.length() - 2);
-            else
-                text = text.substring(0, text.length() - 3);
+
+        if(text.length() > 1 && lastCharacter == '('){
+            char secondLastCharacter = text.charAt(text.length() - 2);
+            if(secondLastCharacter >= 'g' && secondLastCharacter <= 's'){
+                String last2Characters = text.substring(text.length() - 2);
+                if (last2Characters.equals("ln") || last2Characters.equals("tg"))
+                    text = text.substring(0, text.length() - 3);
+                else
+                    text = text.substring(0, text.length() - 4);
+
+            }else
+                text = text.substring(0, text.length() - 1);
 
         } else
             text = text.substring(0, text.length() - 1);
@@ -66,18 +72,21 @@ public class TextResultPreparations {
             if((listText.get(listPosition).charAt(0) >= '0' && listText.get(listPosition).charAt(0) <= '9') || listText.get(listPosition).equals("."))
                 stringText += listText.get(listPosition);
             else {
-                if(!(stringText.equals(""))) {
-                    if(stringText.equals("."))
+                if (!(stringText.equals(""))) {
+                    if (stringText.equals("."))
                         stringText = "0";
-                    else if(countDots(stringText) > 1)
+                    else if (countDots(stringText) > 1)
                         ifError = true;
 
                     newListText.add(stringText);
                     stringText = "";
 
-                } else if(listPosition < (listText.size() - 2))
-                    if(listText.get(listPosition).equals("-") && listText.get(listPosition - 1).equals("(") )
+                } else if (listPosition > 1 && listPosition < (listText.size() - 2)){
+                    if (listText.get(listPosition).equals("-") && listText.get(listPosition - 1).equals("("))
                         stringText += listText.get(listPosition);
+
+                }else if(listPosition == 0 && listText.get(listPosition).equals("-"))
+                    stringText += listText.get(listPosition);
 
                 if(stringText.equals(""))
                     newListText.add(listText.get(listPosition));

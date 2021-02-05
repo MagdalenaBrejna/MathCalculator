@@ -14,7 +14,7 @@ public class ONP {
             return 1;
         else if(operator.equals("*") || operator.equals("/"))
             return 2;
-        else if(operator.equals("^"))
+        else if(operator.equals("^") || operator.equals("\u221a") )
             return 3;
         else
             return 0;
@@ -68,11 +68,11 @@ public class ONP {
             }
         }
 
-
         while(!stackSymbols.empty() && !error) {
             if((stackSymbols.peek().equals("log") || stackSymbols.peek().equals("ln") || stackSymbols.peek().equals("sin") || stackSymbols.peek().equals("cos") ||
-                    stackSymbols.peek().equals("tg") || stackSymbols.peek().equals("\u221a") || stackSymbols.peek().equals(")")))
+                    stackSymbols.peek().equals("tg") || stackSymbols.peek().equals(")")))
                 error = true;
+
             else {
                 if(stackSymbols.peek().equals("("))
                     error = true;
@@ -107,15 +107,25 @@ public class ONP {
                         number1 = stackSymbols.pop();
 
                         if (symbol.equals("ln"))
-                            stackSymbols.add(Math.log(number1));
-                        if (symbol.equals("sin"))
+                            if(number1 > 0)
+                                stackSymbols.add(Math.log(number1));
+                            else
+                                error = true;
+                        else if (symbol.equals("sin"))
                             stackSymbols.add(Math.sin(number1));
-                        if (symbol.equals("cos"))
+                        else if (symbol.equals("cos"))
                             stackSymbols.add(Math.cos(number1));
-                        if (symbol.equals("tg"))
-                            stackSymbols.add(Math.tan(number1));
-                        if (symbol.equals("\u221a"))
-                            stackSymbols.add(Math.sqrt(number1));
+                        else if (symbol.equals("tg"))
+                            if(number1%(Math.PI/2) == 0 && number1%(Math.PI) != 0)
+                                error = true;
+                            else
+                                stackSymbols.add(Math.tan(number1));
+
+                        else if (symbol.equals("\u221a"))
+                            if(number1 >= 0)
+                                stackSymbols.add(Math.sqrt(number1));
+                            else
+                                error = true;
                     }
 
                 } else if (symbol.equals("+") || symbol.equals("-") || symbol.equals("*") ||
@@ -141,7 +151,10 @@ public class ONP {
                         else if (symbol.equals("^"))
                             stackSymbols.add(Math.pow(number1, number2));
                         else if (symbol.equals("log"))
-                            stackSymbols.add(Math.log(number2) / Math.log(number1));
+                            if(number2 > 0 && number1 > 0 && number1 != 1)
+                                stackSymbols.add(Math.log(number2) / Math.log(number1));
+                            else
+                                error = true;
 
                     }
                 } else if (symbol.equals("e")) {

@@ -75,16 +75,21 @@ public class ScientificCalculator extends Calculator {
     }
 
     class DELReaction implements ActionListener{
-        public void actionPerformed(ActionEvent DELEvent){
+        public void actionPerformed(ActionEvent DELEvent) {
 
             if (!text.equals(""))
                 if (calculatorTextField.getText().equals("ERROR")) {
                     calculatorTextField.setText(text);
 
-                }else if (!ifReady) {
-                    text = TextResultPreparations.returnPreviousText(text);
-                    calculatorTextField.setText(text);
-                    textList.remove(textList.size() - 1);
+                } else if (!ifReady) {
+                    String previousText = TextResultPreparations.returnPreviousText(text);
+                    calculatorTextField.setText(previousText);
+                    if(text.length() - previousText.length() > 1) {
+                        textList.remove(textList.size() - 1);
+                        textList.remove(textList.size() - 1);
+                    }else
+                        textList.remove(textList.size() - 1);
+                    text = previousText;
 
                 } else {
                     ifReady = false;
@@ -135,15 +140,18 @@ public class ScientificCalculator extends Calculator {
                 }
             }
 
-            text += buttonText;
-            textList.add(buttonText);
-            if (buttonText.equals("ln") || buttonText.equals("sin") || buttonText.equals("cos") || buttonText.equals("tg") || buttonText.equals("log") || buttonText.equals("\u221a")) {
-                text += "(";
-                textList.add("(");
-            }
+            if(!calculatorTextField.getText().equals("ERROR")) {
 
-            calculatorTextField.setText(text);
-            calculatorResultField.setText(TextResultPreparations.countResult(textList));
+                text += buttonText;
+                textList.add(buttonText);
+                if (buttonText.equals("ln") || buttonText.equals("sin") || buttonText.equals("cos") || buttonText.equals("tg") || buttonText.equals("log") || buttonText.equals("\u221a")) {
+                    text += "(";
+                    textList.add("(");
+                }
+
+                calculatorTextField.setText(text);
+                calculatorResultField.setText(TextResultPreparations.countResult(textList));
+            }
         }
     }
 
