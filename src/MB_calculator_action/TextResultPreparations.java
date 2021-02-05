@@ -2,14 +2,57 @@ package MB_calculator_action;
 
 import java.util.ArrayList;
 
-public class Translation {
+public class TextResultPreparations {
 
     public static int countDots(String text){
+
         int dotNumber = 0;
         for(int textPosition = 0; textPosition < text.length(); textPosition++)
             if(text.charAt(textPosition) == '.')
                 dotNumber++;
         return dotNumber;
+    }
+
+    public static String returnPreviousText(String text){
+
+        char lastCharacter = text.charAt(text.length() - 1);
+        if (lastCharacter >= 'g' && lastCharacter <= 's') {
+            String last2Characters = text.substring(text.length() - 2);
+            if (last2Characters.equals("ln") || last2Characters.equals("tg"))
+                text = text.substring(0, text.length() - 2);
+            else
+                text = text.substring(0, text.length() - 3);
+
+        } else
+            text = text.substring(0, text.length() - 1);
+
+        return text;
+    }
+
+    public static String countResult(ArrayList<String> textList){
+
+        ArrayList<String> textAlteredList = new ArrayList<String>();
+        String textONP = "";
+        boolean error = false;
+
+        if (textList.size() > 0) {
+            textAlteredList = TextResultPreparations.createEntireNumbers(textList);
+            if (textAlteredList.size() > 0) {
+                textAlteredList = ONP.convertTextToONP(textAlteredList);
+                if (textAlteredList.size() > 0) {
+                    textONP = ONP.count(textAlteredList);
+                    if (textONP.equals(""))
+                        error = true;
+                } else
+                    error = true;
+            } else
+                error = true;
+        }
+
+        if (error)
+            return "";
+        else
+            return textONP;
     }
 
     public static ArrayList<String> createEntireNumbers(ArrayList<String> listText) {
@@ -35,7 +78,7 @@ public class Translation {
                 } else if(listText.get(listPosition).equals("-"))
                     stringText += listText.get(listPosition);
 
-                if(stringText == "")
+                if(stringText.equals(""))
                     newListText.add(listText.get(listPosition));
             }
         }
@@ -46,7 +89,6 @@ public class Translation {
             else if(countDots(stringText) > 1)
                 ifError = true;
             newListText.add(stringText);
-            stringText = "";
         }
 
         if(ifError)

@@ -34,14 +34,13 @@ public abstract class Calculator extends JPanel implements ActionListener {
     public Calculator(){
 
         fontUpperPanel = new Font("Helvetica", Font.ITALIC, 16);
-        setBackground(new java.awt.Color(238, 238, 238));
         loweredLevelBorder = BorderFactory.createLoweredBevelBorder();
-
-        northPanelLayout = new GridBagLayout();
-        GridBagConstraints c = new GridBagConstraints();
+        setBackground(new java.awt.Color(238, 238, 238));
 
         rightPanel = new JPanel();
 
+        northPanelLayout = new GridBagLayout();
+        GridBagConstraints c = new GridBagConstraints();
         northPanel = new JPanel();
         northPanel.setLayout(northPanelLayout);
         northPanel.setPreferredSize(new Dimension(400,100));
@@ -53,7 +52,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
 
         darkColoursButton = new JRadioButton("dark");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
+        c.weightx = 0.1;
         c.gridx = 0;
         c.gridy = 0;
         darkColoursButton.setFont(fontUpperPanel);
@@ -64,7 +63,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
 
         lightColoursButton = new JRadioButton("light");
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.5;
+        c.weightx = 0.4;
         c.gridx = 1;
         c.gridy = 0;
         lightColoursButton.setFont(fontUpperPanel);
@@ -82,6 +81,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
         northPanel.add(calculatorResultField,c);
 
         calculatorTextField = new JTextField();
+        c.ipady = 20;
         c.gridwidth = 3;
         c.gridx = 0;
         c.gridy = 1;

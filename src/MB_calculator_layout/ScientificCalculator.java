@@ -1,7 +1,6 @@
 package MB_calculator_layout;
 
-import MB_calculator_action.ONP;
-import MB_calculator_action.Translation;
+import MB_calculator_action.TextResultPreparations;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +39,7 @@ public class ScientificCalculator extends Calculator {
         basicButtons[6] = new BasicButton("7", x, 3 * y + 2 * dly, new PressReaction(), centerPanel);
         basicButtons[7] = new BasicButton("8", 2 * x + dlx, 3 * y + 2 * dly, new PressReaction(), centerPanel);
         basicButtons[8] = new BasicButton("9", 3 * x + 2 * dlx, 3 * y + 2 * dly, new PressReaction(), centerPanel);
-        basicButtons[9] = new BasicButton("=", x, 4 * y + 3 * dly, new countReaction(), centerPanel);
+        basicButtons[9] = new BasicButton("=", x, 4 * y + 3 * dly, new CountReaction(), centerPanel);
         basicButtons[10] = new BasicButton("0", 2 * x + dlx, 4 * y + 3 * dly, new PressReaction(), centerPanel);
         basicButtons[11] = new BasicButton(".", 3 * x + 2 * dlx, 4 * y + 3 * dly, new PressReaction(), centerPanel);
 
@@ -74,49 +73,15 @@ public class ScientificCalculator extends Calculator {
         functionalButtons[17].setBackground(new java.awt.Color(245, 197, 174));
     }
 
-    public void presentPartResults(){
-        ArrayList<String> textList2 = new ArrayList<String>();
-        textONP = "";
-        boolean error = false;
-
-        if (textList.size() > 0) {
-            textList2 = Translation.createEntireNumbers(textList);
-            if (textList2.size() > 0) {
-                textList2 = ONP.convertTextToONP(textList2);
-                if (textList2.size() > 0) {
-                    textONP = ONP.Oblicz(textList2);
-                    if (textONP == "")
-                        error = true;
-                } else
-                    error = true;
-            } else
-                error = true;
-        }
-
-        if (error) {
-            calculatorResultField.setText("");
-        } else {
-            calculatorResultField.setText(textONP);
-        }
-    }
-
-
     class DELReaction implements ActionListener{
         public void actionPerformed(ActionEvent DELEvent){
 
-            if (text != "") {
-                if (!ifReady) {
-                    char lastCharacter = text.charAt(text.length() - 1);
-                    if (lastCharacter >= 'g' && lastCharacter <= 's') {
-                        String last2Characters = text.substring(text.length() - 2);
-                        if (last2Characters.equals("ln") || last2Characters.equals("tg"))
-                            text = text.substring(0, text.length() - 2);
-                        else
-                            text = text.substring(0, text.length() - 3);
+            if (!text.equals(""))
+                if (calculatorTextField.getText().equals("ERROR")) {
+                    calculatorTextField.setText(text);
 
-                    } else
-                        text = text.substring(0, text.length() - 1);
-
+                }else if (!ifReady) {
+                    text = TextResultPreparations.returnPreviousText(text);
                     calculatorTextField.setText(text);
                     textList.remove(textList.size() - 1);
 
@@ -124,12 +89,14 @@ public class ScientificCalculator extends Calculator {
                     ifReady = false;
                     calculatorTextField.setText(text);
                 }
-            }
+
+            calculatorResultField.setText(TextResultPreparations.countResult(textList));
         }
     }
 
     class ACReaction implements ActionListener{
         public void actionPerformed(ActionEvent ACEvent){
+
             ifReady = false;
             text = "";
             calculatorTextField.setText(text);
@@ -137,32 +104,15 @@ public class ScientificCalculator extends Calculator {
         }
     }
 
-    class countReaction implements ActionListener{
+    class CountReaction implements ActionListener{
         public void actionPerformed(ActionEvent countEvent){
 
-            ArrayList<String> textList2 = new ArrayList<String>();
-            textONP = "";
-            boolean error = false;
-
-            if (textList.size() > 0) {
-                textList2 = Translation.createEntireNumbers(textList);
-                if (textList2.size() > 0) {
-                    textList2 = ONP.convertTextToONP(textList2);
-                    if (textList2.size() > 0) {
-                        textONP = ONP.Oblicz(textList2);
-                        if (textONP == "")
-                            error = true;
-                    } else
-                        error = true;
-                } else
-                    error = true;
-            }
-
-            if (error) {
+            if (TextResultPreparations.countResult(textList).equals(""))
                 calculatorTextField.setText("ERROR");
-            } else {
+             else {
                 ifReady = true;
-                calculatorTextField.setText(textONP);
+                textONP = TextResultPreparations.countResult(textList);
+                calculatorTextField.setText(TextResultPreparations.countResult(textList));
             }
         }
     }
@@ -172,66 +122,27 @@ public class ScientificCalculator extends Calculator {
 
             String buttonText = ((JButton) pressEvent.getSource()).getText();
 
-            if (calculatorTextField.getText().equals("ERROR")) {
-                if (buttonText == "<<")
-                    calculatorTextField.setText(text);
-                else if (buttonText == "AC") {
+            if(ifReady){
+                ifReady = false;
+                if (!(buttonText.equals("+") || buttonText.equals("-") || buttonText.equals("*") || buttonText.equals("/") || buttonText.equals("^"))) {
                     text = "";
-                    calculatorTextField.setText(text);
                     textList.clear();
+                } else {
+                    text = textONP;
+                    textList.clear();
+                    textList.add(text);
                 }
-
-            } else {
-                switch (buttonText) {
-                    case ("\u221a"):
-                        if (ifReady) {
-                            text = "";
-                            textList.clear();
-                            ifReady = false;
-                        }
-                        text += "\u221a";
-                        textList.add("\u221a");
-                        text += "(";
-                        textList.add("(");
-                        calculatorTextField.setText(text);
-                        break;
-
-                    case ("\u03c0"):
-
-                        if (ifReady) {
-                            text = "";
-                            textList.clear();
-                            ifReady = false;
-                        }
-                        text += "\u03c0";
-                        calculatorTextField.setText(text);
-                        textList.add("\u03c0");
-                        break;
-
-                    default:
-                        if (ifReady) {
-                            ifReady = false;
-                            if (!(buttonText == "+" || buttonText == "-" || buttonText == "*" || buttonText == "/" || buttonText == "^")) {
-                                text = "";
-                                textList.clear();
-                            } else {
-                                text = textONP;
-                                textList.clear();
-                                textList.add(text);
-                            }
-                        }
-                        text += buttonText;
-                        textList.add(buttonText);
-                        if (buttonText == "ln" || buttonText == "sin" || buttonText == "cos" || buttonText == "tg" || buttonText == "log") {
-                            text += "(";
-                            textList.add("(");
-                        }
-                        calculatorTextField.setText(text);
-
-                        break;
-                }
-                presentPartResults();
             }
+
+            text += buttonText;
+            textList.add(buttonText);
+            if (buttonText.equals("ln") || buttonText.equals("sin") || buttonText.equals("cos") || buttonText.equals("tg") || buttonText.equals("log") || buttonText.equals("\u221a")) {
+                text += "(";
+                textList.add("(");
+            }
+
+            calculatorTextField.setText(text);
+            calculatorResultField.setText(TextResultPreparations.countResult(textList));
         }
     }
 
