@@ -11,8 +11,6 @@ import java.util.ArrayList;
 
 public class ScientificCalculator extends Calculator {
 
-    private JPanel rightPanel;
-
     private ArrayList<String> textList = new ArrayList<String>();
 
     private boolean ifReady = false;
@@ -26,7 +24,6 @@ public class ScientificCalculator extends Calculator {
         centerPanel.setPreferredSize(new Dimension(320,500));
         centerPanel.setLocation(0,300);
 
-        rightPanel = new JPanel();
         rightPanel.setPreferredSize(new Dimension(200,500));
         rightPanel.setLocation(510,300);
         rightPanel.setLayout(null);
@@ -71,6 +68,10 @@ public class ScientificCalculator extends Calculator {
         functionalButtons[15] = new FunctionalButton("tg", 4*x + 3*dlx - 2, 6*y + 5*dly, dlx, dly, new PressReaction(), centerPanel);
         functionalButtons[16] = new FunctionalButton("<<", 2*x + dlx, 7*y + 6*dly, dlx, dly, new DELReaction(), centerPanel);
         functionalButtons[17] = new FunctionalButton("AC", 3*x + 2*dlx, 7*y + 6*dly, dlx, dly, new ACReaction(), centerPanel);
+
+        basicButtons[9].setBackground(new java.awt.Color(245, 197, 174));
+        functionalButtons[16].setBackground(new java.awt.Color(245, 197, 174));
+        functionalButtons[17].setBackground(new java.awt.Color(245, 197, 174));
     }
 
     class DELReaction implements ActionListener{

@@ -1,6 +1,7 @@
 package MB_calculator_layout;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
 
     protected JPanel northPanel;
     protected JPanel centerPanel;
+    protected JPanel rightPanel;
 
     protected JTextField calculatorTextField;
 
@@ -26,16 +28,23 @@ public abstract class Calculator extends JPanel implements ActionListener {
     protected String result = "";
     protected String text = "";
 
+    protected Border loweredLevelBorder;
+
     public Calculator(){
 
         fontUpperPanel = new Font("Helvetica", Font.ITALIC, 16);
+        setBackground(new java.awt.Color(238, 238, 238));
+        loweredLevelBorder = BorderFactory.createLoweredBevelBorder();
 
         northPanelLayout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
 
+        rightPanel = new JPanel();
+
         northPanel = new JPanel();
         northPanel.setLayout(northPanelLayout);
         northPanel.setPreferredSize(new Dimension(500,100));
+        northPanel.setBackground(new java.awt.Color(238, 238, 238));
         add(BorderLayout.NORTH, northPanel);
 
         basicButtons = new JButton[12];
@@ -47,6 +56,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
         c.gridx = 0;
         c.gridy = 0;
         darkColoursButton.setFont(fontUpperPanel);
+        darkColoursButton.setBackground(new java.awt.Color(238, 238, 238));
         darkColoursButton.addActionListener(this);
         groupColourButtons.add(darkColoursButton);
         northPanel.add(darkColoursButton,c);
@@ -57,6 +67,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
         c.gridx = 1;
         c.gridy = 0;
         lightColoursButton.setFont(fontUpperPanel);
+        lightColoursButton.setBackground(new java.awt.Color(238, 238, 238));
         lightColoursButton.addActionListener(this);
         groupColourButtons.add(lightColoursButton);
         northPanel.add(lightColoursButton,c);
@@ -67,12 +78,14 @@ public abstract class Calculator extends JPanel implements ActionListener {
         c.gridx = 0;
         c.gridy = 1;
         calculatorTextField.setFont(fontUpperPanel);
+        calculatorTextField.setBorder(loweredLevelBorder);
+        calculatorTextField.setBackground(new java.awt.Color(248, 248, 248));
         northPanel.add(calculatorTextField,c);
 
         centerPanel = new JPanel();
         centerPanel.setLayout(null);
         centerPanel.setPreferredSize(new Dimension(450,600));
-
+        centerPanel.setBackground(new java.awt.Color(238, 238, 238));
         add(BorderLayout.CENTER, centerPanel);
 
     }
@@ -81,9 +94,24 @@ public abstract class Calculator extends JPanel implements ActionListener {
         Object source = pressEvent.getSource();
 
         if(source == darkColoursButton){
-            setBackground(new java.awt.Color(43, 45, 45));
+            setBackground(new java.awt.Color(43,45,45));
+            lightColoursButton.setBackground(new java.awt.Color(43,45,45));
+            darkColoursButton.setBackground(new java.awt.Color(43,45,45));
+            northPanel.setBackground(new java.awt.Color(43,45,45));
+            centerPanel.setBackground(new java.awt.Color(43,45,45));
+            rightPanel.setBackground(new java.awt.Color(43,45,45));
+            lightColoursButton.setForeground(Color.white);
+            darkColoursButton.setForeground(Color.white);
+
         }else if (source == lightColoursButton){
-            setBackground(new java.awt.Color(190, 208, 211));
+            setBackground(new java.awt.Color(238, 238, 238));
+            lightColoursButton.setBackground(new java.awt.Color(238, 238, 238));
+            darkColoursButton.setBackground(new java.awt.Color(238, 238, 238));
+            northPanel.setBackground(new java.awt.Color(238, 238, 238));
+            centerPanel.setBackground(new java.awt.Color(238, 238, 238));
+            rightPanel.setBackground(new java.awt.Color(238, 238, 238));
+            lightColoursButton.setForeground(Color.black);
+            darkColoursButton.setForeground(Color.black);
         }
     }
 

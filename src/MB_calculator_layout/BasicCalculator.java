@@ -42,6 +42,10 @@ public class BasicCalculator extends Calculator{
         functionalButtons[3] = new FunctionalButton("/", 4*x + 3*dlx+3, y, dlx, dly, new PressReaction(), centerPanel);
         functionalButtons[4] = new FunctionalButton("AC", 2*x + dlx+10, y + dly + 25, dlx, dly, new ACReaction(), centerPanel);
         functionalButtons[5] = new FunctionalButton("<<", 3*x + 2*dlx+7, y + dly + 25, dlx, dly, new BackReaction(), centerPanel);
+
+        basicButtons[9].setBackground(new java.awt.Color(245, 197, 174));
+        functionalButtons[4].setBackground(new java.awt.Color(245, 197, 174));
+        functionalButtons[5].setBackground(new java.awt.Color(245, 197, 174));
     }
 
     class CountReaction implements ActionListener{
