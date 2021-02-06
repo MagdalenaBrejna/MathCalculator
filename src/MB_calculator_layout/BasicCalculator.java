@@ -41,7 +41,7 @@ public class BasicCalculator extends Calculator{
         functionalButtons[2] = new FunctionalButton("*", 3*x + 2*dlx+7, y, dlx, dly, new PressReaction(), centerPanel);
         functionalButtons[3] = new FunctionalButton("/", 4*x + 3*dlx+3, y, dlx, dly, new PressReaction(), centerPanel);
         functionalButtons[4] = new FunctionalButton("AC", 2*x + dlx+10, y + dly + 25, dlx, dly, new ACReaction(), centerPanel);
-        functionalButtons[5] = new FunctionalButton("<<", 3*x + 2*dlx+7, y + dly + 25, dlx, dly, new BackReaction(), centerPanel);
+        functionalButtons[5] = new FunctionalButton("<<", 3*x + 2*dlx+7, y + dly + 25, dlx, dly, new DELReaction(), centerPanel);
 
         basicButtons[9].setBackground(new java.awt.Color(245, 197, 174));
         functionalButtons[4].setBackground(new java.awt.Color(245, 197, 174));
@@ -71,6 +71,15 @@ public class BasicCalculator extends Calculator{
             operationSymbol = "";
             calculatorTextField.setText(text);
             calculatorResultField.setText(text);
+        }
+    }
+
+    class DELReaction implements ActionListener{
+        public void actionPerformed(ActionEvent DELEvent){
+            if(!text.equals("")) {
+                text = text.substring(0, text.length() - 1);
+                calculatorTextField.setText(text);
+            }
         }
     }
 

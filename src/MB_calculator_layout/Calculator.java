@@ -78,6 +78,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
         calculatorResultField.setFont(fontUpperPanel);
         calculatorResultField.setBorder(loweredLevelBorder);
         calculatorResultField.setBackground(new java.awt.Color(220, 220, 220));
+        calculatorResultField.setEditable(false);
         northPanel.add(calculatorResultField,c);
 
         calculatorTextField = new JTextField();
@@ -88,6 +89,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
         calculatorTextField.setFont(fontUpperPanel);
         calculatorTextField.setBorder(loweredLevelBorder);
         calculatorTextField.setBackground(new java.awt.Color(248, 248, 248));
+        calculatorTextField.setEditable(false);
         northPanel.add(calculatorTextField,c);
 
         centerPanel = new JPanel();
@@ -122,14 +124,4 @@ public abstract class Calculator extends JPanel implements ActionListener {
             darkColoursButton.setForeground(Color.black);
         }
     }
-
-    class BackReaction implements ActionListener{
-        public void actionPerformed(ActionEvent backEvent){
-            if(!text.equals("")) {
-                text = text.substring(0, text.length() - 1);
-                calculatorTextField.setText(text);
-            }
-        }
-    }
-
 }

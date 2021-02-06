@@ -39,33 +39,24 @@ public class TextResultPreparations {
 
         ArrayList<String> textAlteredList = new ArrayList<String>();
         String textONP = "";
-        boolean error = false;
 
-        if (textList.size() > 0) {
-            textAlteredList = TextResultPreparations.createEntireNumbers(textList);
-            if (textAlteredList.size() > 0) {
+        if (textList.size() > 0)
+            try{
+                textAlteredList = TextResultPreparations.createEntireNumbers(textList);
                 textAlteredList = ONP.convertTextToONP(textAlteredList);
-                if (textAlteredList.size() > 0) {
-                    textONP = ONP.count(textAlteredList);
-                    if (textONP.equals(""))
-                        error = true;
-                } else
-                    error = true;
-            } else
-                error = true;
-        }
+                textONP = ONP.count(textAlteredList);
 
-        if (error)
-            return "";
-        else
-            return textONP;
+            } catch(WrongExpressionException exception){
+                return "";
+            }
+
+        return textONP;
     }
 
-    public static ArrayList<String> createEntireNumbers(ArrayList<String> listText) {
+    public static ArrayList<String> createEntireNumbers(ArrayList<String> listText) throws WrongExpressionException{
 
         ArrayList<String> newListText = new ArrayList<String>();
         String stringText = "";
-        boolean ifError = false;
 
         for(int listPosition = 0; listPosition < listText.size(); listPosition++) {
 
@@ -76,7 +67,7 @@ public class TextResultPreparations {
                     if (stringText.equals("."))
                         stringText = "0";
                     else if (countDots(stringText) > 1)
-                        ifError = true;
+                        throw new WrongExpressionException("error");
 
                     newListText.add(stringText);
                     stringText = "";
@@ -97,12 +88,9 @@ public class TextResultPreparations {
             if(stringText.equals("."))
                 stringText = "0";
             else if(countDots(stringText) > 1)
-                ifError = true;
+                throw new WrongExpressionException("error");
             newListText.add(stringText);
         }
-
-        if(ifError)
-            newListText.clear();
 
         return newListText;
     }

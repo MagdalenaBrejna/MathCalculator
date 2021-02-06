@@ -144,7 +144,8 @@ public class ScientificCalculator extends Calculator {
 
                 text += buttonText;
                 textList.add(buttonText);
-                if (buttonText.equals("ln") || buttonText.equals("sin") || buttonText.equals("cos") || buttonText.equals("tg") || buttonText.equals("log") || buttonText.equals("\u221a")) {
+                if (buttonText.equals("ln") || buttonText.equals("sin") || buttonText.equals("cos") ||
+                        buttonText.equals("tg") || buttonText.equals("log") || buttonText.equals("\u221a")) {
                     text += "(";
                     textList.add("(");
                 }
