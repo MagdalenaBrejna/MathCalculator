@@ -1,33 +1,68 @@
 package MB_calculator_layout;
 
 import MB_calculator_action.TextResultPreparations;
+import MB_calculator_action.WrongExpressionException;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ScientificCalculator extends Calculator {
 
     private ArrayList<String> textList = new ArrayList<String>();
 
+    private JLabel errorMessageLabel;
+
+    private JTextField errorMessageTextField;
+
     private boolean ifReady = false;
 
     private String textONP = "";
+   // public String errorMassege = "";
+
+    private final static String sqrt = "\u221a";
+    private final static String pi = "\u03c0";
+
+    Border raisedLevelBorder = BorderFactory.createRaisedBevelBorder();
 
     public ScientificCalculator() {
 
         super();
 
-        centerPanel.setPreferredSize(new Dimension(320,500));
+        fontUpperPanel = new Font("Helvetica", Font.ITALIC, 18);
+
+        centerPanel.setPreferredSize(new Dimension(320,480));
         centerPanel.setLocation(0,300);
 
-        rightPanel.setPreferredSize(new Dimension(200,500));
+        rightPanel.setPreferredSize(new Dimension(200,480));
         rightPanel.setLocation(510,300);
+        rightPanel.setBackground(new java.awt.Color(238, 238, 238));
         rightPanel.setLayout(null);
         add(BorderLayout.EAST, rightPanel);
+
+        southPanel.setPreferredSize(new Dimension(520,80));
+        southPanel.setLocation(0,570);
+        southPanel.setBackground(new java.awt.Color(238, 238, 238));
+        southPanel.setLayout(null);
+        add(BorderLayout.SOUTH, southPanel);
+
+        errorMessageLabel = new JLabel(" Error Message");
+        errorMessageLabel.setBounds(20, 10, 137, 30);
+        errorMessageLabel.setFont(fontUpperPanel);
+        errorMessageLabel.setBorder(raisedLevelBorder);
+        errorMessageLabel.setBackground(new java.awt.Color(225, 225, 225));
+        southPanel.add(errorMessageLabel);
+
+        errorMessageTextField = new JTextField();
+        errorMessageTextField .setBounds(177, 10, 326, 30);
+        errorMessageTextField .setFont(fontUpperPanel);
+        errorMessageTextField.setBorder(loweredLevelBorder);
+        errorMessageTextField.setBackground(new java.awt.Color(248, 248, 248));
+        errorMessageTextField.setEditable(false);
+        southPanel.add(errorMessageTextField);
 
         int dlx = 88, dly = 60, x = 20, y = 20;
 
@@ -58,16 +93,16 @@ public class ScientificCalculator extends Calculator {
         functionalButtons[5] = new FunctionalButton(")", 2*x + dlx + 20, 3*y + 2*dly, dlx, dly, new PressReaction(), rightPanel);
         functionalButtons[6] = new FunctionalButton(",", x + 20, 4*y + 3*dly, dlx, dly, new PressReaction(), rightPanel);
         functionalButtons[7] = new FunctionalButton("^", 2*x + dlx + 20, 4*y + 3*dly, dlx, dly, new PressReaction(), rightPanel);
-        functionalButtons[8] = new FunctionalButton("\u221a", x + 20, 5*y + 4*dly, dlx, dly, new PressReaction(), rightPanel);
-        functionalButtons[9] = new FunctionalButton("\u03c0", 2*x + dlx + 20, 5*y + 4*dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[8] = new FunctionalButton(sqrt, x + 20, 5*y + 4*dly, dlx, dly, new PressReaction(), rightPanel);
+        functionalButtons[9] = new FunctionalButton(pi, 2*x + dlx + 20, 5*y + 4*dly, dlx, dly, new PressReaction(), rightPanel);
         functionalButtons[10] = new FunctionalButton("log", x + 20, 6*y + 5*dly, dlx, dly, new PressReaction(), rightPanel);
         functionalButtons[11] = new FunctionalButton("ln", 2*x + dlx + 20, 6*y + 5*dly, dlx, dly, new PressReaction(), rightPanel);
         functionalButtons[12] = new FunctionalButton("e",  x, 6*y + 5*dly, dlx, dly, new PressReaction(), centerPanel);
         functionalButtons[13] = new FunctionalButton("sin", 2*x + dlx - 2, 6*y + 5*dly, dlx, dly, new PressReaction(), centerPanel);
         functionalButtons[14] = new FunctionalButton("cos", 3*x + 2*dlx - 2, 6*y + 5*dly, dlx, dly, new PressReaction(), centerPanel);
         functionalButtons[15] = new FunctionalButton("tg", 4*x + 3*dlx - 2, 6*y + 5*dly, dlx, dly, new PressReaction(), centerPanel);
-        functionalButtons[16] = new FunctionalButton("<<", 2*x + dlx, 7*y + 6*dly, dlx, dly, new DELReaction(), centerPanel);
-        functionalButtons[17] = new FunctionalButton("AC", 3*x + 2*dlx, 7*y + 6*dly, dlx, dly, new ACReaction(), centerPanel);
+        functionalButtons[16] = new FunctionalButton("<<", 2*x + dlx - 1, 7*y + 6*dly, dlx, dly, new DELReaction(), centerPanel);
+        functionalButtons[17] = new FunctionalButton("AC", 3*x + 2*dlx - 1, 7*y + 6*dly, dlx, dly, new ACReaction(), centerPanel);
 
         basicButtons[9].setBackground(new java.awt.Color(245, 197, 174));
         functionalButtons[16].setBackground(new java.awt.Color(245, 197, 174));
@@ -106,6 +141,8 @@ public class ScientificCalculator extends Calculator {
             ifReady = false;
             text = "";
             calculatorTextField.setText(text);
+            errorMessageTextField.setText("");
+            calculatorResultField.setText("");
             textList.clear();
         }
     }
@@ -113,12 +150,14 @@ public class ScientificCalculator extends Calculator {
     class CountReaction implements ActionListener{
         public void actionPerformed(ActionEvent countEvent){
 
-            if (TextResultPreparations.countResult(textList).equals(""))
+            if (TextResultPreparations.countResult(textList).equals("")) {
                 calculatorTextField.setText("ERROR");
-             else {
+                errorMessageTextField.setText(WrongExpressionException.getErrorMessage());
+            }else {
                 ifReady = true;
                 textONP = calculatorResultField.getText();
                 calculatorTextField.setText(textONP);
+                errorMessageTextField.setText("");
             }
         }
     }
@@ -145,7 +184,7 @@ public class ScientificCalculator extends Calculator {
                 text += buttonText;
                 textList.add(buttonText);
                 if (buttonText.equals("ln") || buttonText.equals("sin") || buttonText.equals("cos") ||
-                        buttonText.equals("tg") || buttonText.equals("log") || buttonText.equals("\u221a")) {
+                        buttonText.equals("tg") || buttonText.equals("log") || buttonText.equals(sqrt)) {
                     text += "(";
                     textList.add("(");
                 }

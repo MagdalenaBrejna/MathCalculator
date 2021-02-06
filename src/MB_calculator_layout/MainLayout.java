@@ -20,7 +20,7 @@ public class MainLayout {
         frame.getContentPane().add(BorderLayout.CENTER, calculatorTypePanel);
 
         frame.pack();
-        frame.setSize(600,700);
+        frame.setSize(600,740);
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

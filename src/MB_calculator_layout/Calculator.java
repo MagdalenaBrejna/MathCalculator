@@ -20,6 +20,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
     protected JPanel northPanel;
     protected JPanel centerPanel;
     protected JPanel rightPanel;
+    protected JPanel southPanel;
 
     protected JTextField calculatorTextField;
     protected JTextField calculatorResultField;
@@ -38,6 +39,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
         setBackground(new java.awt.Color(238, 238, 238));
 
         rightPanel = new JPanel();
+        southPanel = new JPanel();
 
         northPanelLayout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -110,6 +112,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
             northPanel.setBackground(new java.awt.Color(43,45,45));
             centerPanel.setBackground(new java.awt.Color(43,45,45));
             rightPanel.setBackground(new java.awt.Color(43,45,45));
+            //southPanel.setBackground(new java.awt.Color(43,45,45));
             lightColoursButton.setForeground(Color.white);
             darkColoursButton.setForeground(Color.white);
 
@@ -120,6 +123,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
             northPanel.setBackground(new java.awt.Color(238, 238, 238));
             centerPanel.setBackground(new java.awt.Color(238, 238, 238));
             rightPanel.setBackground(new java.awt.Color(238, 238, 238));
+            southPanel.setBackground(new java.awt.Color(238, 238, 238));
             lightColoursButton.setForeground(Color.black);
             darkColoursButton.setForeground(Color.black);
         }

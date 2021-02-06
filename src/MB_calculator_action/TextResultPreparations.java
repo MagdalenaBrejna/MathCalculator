@@ -67,7 +67,7 @@ public class TextResultPreparations {
                     if (stringText.equals("."))
                         stringText = "0";
                     else if (countDots(stringText) > 1)
-                        throw new WrongExpressionException("error");
+                        throw new WrongExpressionException("Too many dots in the number.");
 
                     newListText.add(stringText);
                     stringText = "";
@@ -88,7 +88,7 @@ public class TextResultPreparations {
             if(stringText.equals("."))
                 stringText = "0";
             else if(countDots(stringText) > 1)
-                throw new WrongExpressionException("error");
+                throw new WrongExpressionException("Too many dots in the number.");
             newListText.add(stringText);
         }
 
