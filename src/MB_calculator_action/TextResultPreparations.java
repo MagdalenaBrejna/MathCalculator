@@ -120,6 +120,7 @@ public class TextResultPreparations {
                 if(stringText.equals(""))
                     newListText.add(listText.get(listPosition));
             }
+
         }
 
         if(!(stringText.equals(""))) {

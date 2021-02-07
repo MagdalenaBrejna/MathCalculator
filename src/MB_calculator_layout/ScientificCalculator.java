@@ -208,6 +208,7 @@ public class ScientificCalculator extends Calculator {
                 }
 
                 calculatorTextField.setText(text);
+
                 //count current result
                 TextResultPreparations.countCurrentResult(textList, calculatorResultField);
             }

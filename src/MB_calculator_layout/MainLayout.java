@@ -15,8 +15,8 @@ public class MainLayout {
         calculatorTypePanel = new JTabbedPane();
         calculatorTypePanel.setLocation(30,30);
 
-        calculatorTypePanel.add("Basic", new BasicCalculator());
         calculatorTypePanel.add("Scientific", new ScientificCalculator());
+        calculatorTypePanel.add("Basic", new BasicCalculator());
 
         frame.getContentPane().add(BorderLayout.CENTER, calculatorTypePanel);
 

@@ -1,6 +1,7 @@
 package MB_calculator_layout;
 
 import MB_calculator_action.BasicEquationCount;
+import MB_calculator_action.WrongExpressionException;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -8,7 +9,8 @@ import java.awt.event.ActionListener;
 
 public class BasicCalculator extends Calculator{
 
-    private String number1 = "", number2 = "", operationSymbol = "";
+    private String number1 = "", number2 = "", operationSymbol = "=", result = "";
+    private boolean ifready;
 
     public BasicCalculator(){
 
@@ -55,13 +57,20 @@ public class BasicCalculator extends Calculator{
             number2 = text;
             if(!number1.equals(""))
                 //if there are two numbers count a result
-                result = BasicEquationCount.count(number1, operationSymbol, number2);
+                try {
+                    result = BasicEquationCount.count(number1, operationSymbol, number2);
+                }catch(NumberFormatException | WrongExpressionException exception){
+                    calculatorResultField.setText("");
+                    calculatorTextField.setText("ERROR");
+                }
+
             else
                 //if there is only one number, the number is a result
                 result = number2;
+
             calculatorTextField.setText(result);
             calculatorResultField.setText(result);
-            text = "";
+            text = result;
             number1 = "";
             number2 = "";
         }
@@ -74,6 +83,9 @@ public class BasicCalculator extends Calculator{
             operationSymbol = "";
             calculatorTextField.setText(text);
             calculatorResultField.setText(text);
+            number1 = "";
+            number2 = "";
+            result = "";
         }
     }
 
@@ -91,31 +103,58 @@ public class BasicCalculator extends Calculator{
         public void actionPerformed(ActionEvent pressEvent){
         //react to a button
 
-            if(text.equals(""))
-                calculatorTextField.setText("");
-
             char character = (pressEvent.getActionCommand()).charAt(0);
             String buttonText = ((JButton)pressEvent.getSource()).getText();
 
-            //if a character is a number, add it to the expression
-            if(character >= '0' && character <= '9') {
-                text += character;
-                calculatorTextField.setText(text);
+            if(!number1.equals("")){
 
-            //if a character is a dot and there aren't any dots in the expression, add a dot to the expression
-            }else if(character == '.'){
-                if(!text.contains(".")) {
-                    text += character;
+                //if number1 exists and character is a number or dot add character to the text which builds number2
+                if (character >= '0' && character <= '9' || (character == '.' && !text.contains("."))) {
+                    text += buttonText;
                     calculatorTextField.setText(text);
+
+                }else{
+
+                    if(!result.equals(""))
+                        result = "";
+
+                    //if number1 exists, character is an operator and the text building number2 isn't empty count and set the result
+                    if(!text.equals("")){
+                        number2 = text;
+                        try {
+                            number1 = BasicEquationCount.count(number1, operationSymbol, number2);
+                            calculatorResultField.setText(number1);
+                            calculatorTextField.setText(number1);
+                            number2 = "";
+                            text = "";
+
+                        }catch(NumberFormatException | WrongExpressionException exception){
+                            calculatorResultField.setText("");
+                            calculatorTextField.setText("ERROR");
+                        }
+                    }
+                    operationSymbol = buttonText;
                 }
 
-            //if a character is an mathematical operator set first number of the operation and operator
-            }else if(buttonText.equals("/") || buttonText.equals("*") || buttonText.equals("-") || buttonText.equals("+")) {
-                if(!text.equals("")){
+            }else{
+
+                //if number1 doesn't exist and character is a number or dot, add this character to the text building number1
+                if (character >= '0' && character <= '9' || (character == '.' && !text.contains("."))){
+
+                    if (result.equals(""))
+                        text += buttonText;
+                    else{
+                        text = buttonText;
+                        result = "";
+                    }
+                    calculatorTextField.setText(text);
+
+                }else{
+                    //if number1 doesn't exist and character is an operator, save operator and create number1
                     number1 = text;
                     calculatorResultField.setText(number1);
-                    operationSymbol = buttonText;
                     text = "";
+                    operationSymbol = buttonText;
                 }
             }
         }
