@@ -38,7 +38,7 @@ public abstract class Calculator extends JPanel implements ActionListener {
         loweredLevelBorder = BorderFactory.createLoweredBevelBorder();
         setBackground(new java.awt.Color(238, 238, 238));
 
-        basicButtons = new JButton[12];
+        basicButtons = new JButton[11];
 
         rightPanel = new JPanel();
         southPanel = new JPanel();

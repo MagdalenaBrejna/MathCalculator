@@ -13,9 +13,12 @@ public class BasicCalculator extends Calculator{
     public BasicCalculator(){
 
         super();
+
         centerPanel.setLocation(60,300);
 
-        //create 12 basic buttons of numbers, dot and equality in the central panel
+        functionalButtons = new JButton[7];
+
+        //creating 11 basic buttons of numbers and dot and functional button of equality in the central panel
         int dlx = 80, dly = 60, x = 50, y = 20;
 
         basicButtons[0] = new BasicButton("1", x, y, new PressReaction(), centerPanel);
@@ -27,9 +30,9 @@ public class BasicCalculator extends Calculator{
         basicButtons[6] = new BasicButton("7", x, 3*y + 2*dly, new PressReaction(), centerPanel);
         basicButtons[7] = new BasicButton("8", 2*x + dlx, 3*y + 2*dly, new PressReaction(), centerPanel);
         basicButtons[8] = new BasicButton("9", 3*x + 2*dlx, 3*y + 2*dly, new PressReaction(), centerPanel);
-        basicButtons[9] = new BasicButton("=", x, 4*y + 3*dly, new CountReaction(), centerPanel);
-        basicButtons[10] = new BasicButton("0", 2*x + dlx, 4*y + 3*dly, new PressReaction(), centerPanel);
-        basicButtons[11] = new BasicButton(".", 3*x + 2*dlx, 4*y + 3*dly, new PressReaction(), centerPanel);
+        functionalButtons[6] = new FunctionalButton("=", x, 4*y + 3*dly, dlx, dly, new CountReaction(), centerPanel);
+        basicButtons[9] = new BasicButton("0", 2*x + dlx, 4*y + 3*dly, new PressReaction(), centerPanel);
+        basicButtons[10] = new BasicButton(".", 3*x + 2*dlx, 4*y + 3*dly, new PressReaction(), centerPanel);
 
         //create 6 basic functional buttons
         dlx = 60;
@@ -37,7 +40,6 @@ public class BasicCalculator extends Calculator{
         x = 37;
         y = 360;
 
-        functionalButtons = new JButton[6];
         functionalButtons[0] = new FunctionalButton("+", x+13, y, dlx, dly, new PressReaction(), centerPanel);
         functionalButtons[1] = new FunctionalButton("-", 2*x + dlx+10, y, dlx, dly, new PressReaction(), centerPanel);
         functionalButtons[2] = new FunctionalButton("*", 3*x + 2*dlx+7, y, dlx, dly, new PressReaction(), centerPanel);
@@ -45,10 +47,6 @@ public class BasicCalculator extends Calculator{
         functionalButtons[4] = new FunctionalButton("AC", 2*x + dlx+10, y + dly + 25, dlx, dly, new ACReaction(), centerPanel);
         functionalButtons[5] = new FunctionalButton("<<", 3*x + 2*dlx+7, y + dly + 25, dlx, dly, new DELReaction(), centerPanel);
 
-        //setting a different colour for important functional buttons
-        basicButtons[9].setBackground(new java.awt.Color(245, 197, 174));
-        functionalButtons[4].setBackground(new java.awt.Color(245, 197, 174));
-        functionalButtons[5].setBackground(new java.awt.Color(245, 197, 174));
     }
 
     class CountReaction implements ActionListener{

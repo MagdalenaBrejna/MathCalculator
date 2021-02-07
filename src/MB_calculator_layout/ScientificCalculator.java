@@ -31,6 +31,8 @@ public class ScientificCalculator extends Calculator {
 
         super();
 
+        functionalButtons = new FunctionalButton[19];
+
         fontUpperPanel = new Font("Helvetica", Font.ITALIC, 18);
 
         //create panels with their features
@@ -65,7 +67,7 @@ public class ScientificCalculator extends Calculator {
         errorMessageTextField.setEditable(false);
         southPanel.add(errorMessageTextField);
 
-        //creating 12 basic buttons of numbers, dot and equality in the central panel
+        //creating 11 basic buttons of numbers and dot and functional button of equality in the central panel
         int dlx = 88, dly = 60, x = 20, y = 20;
 
         basicButtons[0] = new BasicButton("1", x, y, new PressReaction(), centerPanel);
@@ -77,9 +79,9 @@ public class ScientificCalculator extends Calculator {
         basicButtons[6] = new BasicButton("7", x, 3 * y + 2 * dly, new PressReaction(), centerPanel);
         basicButtons[7] = new BasicButton("8", 2 * x + dlx, 3 * y + 2 * dly, new PressReaction(), centerPanel);
         basicButtons[8] = new BasicButton("9", 3 * x + 2 * dlx, 3 * y + 2 * dly, new PressReaction(), centerPanel);
-        basicButtons[9] = new BasicButton("=", x, 4 * y + 3 * dly, new CountReaction(), centerPanel);
-        basicButtons[10] = new BasicButton("0", 2 * x + dlx, 4 * y + 3 * dly, new PressReaction(), centerPanel);
-        basicButtons[11] = new BasicButton(".", 3 * x + 2 * dlx, 4 * y + 3 * dly, new PressReaction(), centerPanel);
+        functionalButtons[18] = new FunctionalButton("=", x, 4 * y + 3 * dly, 80, 60, new CountReaction(), centerPanel);
+        basicButtons[9] = new BasicButton("0", 2 * x + dlx, 4 * y + 3 * dly, new PressReaction(), centerPanel);
+        basicButtons[10] = new BasicButton(".", 3 * x + 2 * dlx, 4 * y + 3 * dly, new PressReaction(), centerPanel);
 
         //create 18 functional buttons on right and central panel
         x = 20;
@@ -87,7 +89,6 @@ public class ScientificCalculator extends Calculator {
         dlx = 60;
         dly = 45;
 
-        functionalButtons = new FunctionalButton[18];
         functionalButtons[0] = new FunctionalButton("+", x + 20, y, dlx, dly, new PressReaction(), rightPanel);
         functionalButtons[1] = new FunctionalButton("-", 2*x + dlx + 20, y, dlx, dly, new PressReaction(), rightPanel);
         functionalButtons[2] = new FunctionalButton("*", x + 20, 2*y + dly, dlx, dly, new PressReaction(), rightPanel);
@@ -107,10 +108,6 @@ public class ScientificCalculator extends Calculator {
         functionalButtons[16] = new FunctionalButton("<<", 2*x + dlx - 1, 7*y + 6*dly, dlx, dly, new DELReaction(), centerPanel);
         functionalButtons[17] = new FunctionalButton("AC", 3*x + 2*dlx - 1, 7*y + 6*dly, dlx, dly, new ACReaction(), centerPanel);
 
-        //setting a different color for important functional buttons
-        basicButtons[9].setBackground(new java.awt.Color(245, 197, 174));
-        functionalButtons[16].setBackground(new java.awt.Color(245, 197, 174));
-        functionalButtons[17].setBackground(new java.awt.Color(245, 197, 174));
     }
 
     class DELReaction implements ActionListener{
@@ -122,6 +119,7 @@ public class ScientificCalculator extends Calculator {
                 if (calculatorTextField.getText().equals("ERROR")) {
                     //if the text equals "ERROR", restore text which cause error
                     calculatorTextField.setText(text);
+                    errorMessageTextField.setText("");
 
                 } else if (!ifReady) {
                     //if the expression doesn't cause error but it isn't ready, delete appropriate number of characters
@@ -140,10 +138,8 @@ public class ScientificCalculator extends Calculator {
                     calculatorTextField.setText(text);
                 }
 
-            //count current result if there is a possibility that the expression is correct
-            if (textList.size() > 0 && !(textList.get(textList.size() - 1).equals("(") || textList.get(textList.size() - 1).equals("+") || textList.get(textList.size() - 1).equals("-") || textList.get(textList.size() - 1).equals("*") ||
-                    textList.get(textList.size() - 1).equals("/") || textList.get(textList.size() - 1).equals("^") || textList.get(textList.size() - 1).equals(sqrt)))
-                calculatorResultField.setText(TextResultPreparations.countResult(textList));
+            //count current result
+            TextResultPreparations.countCurrentResult(textList, calculatorResultField);
 
         }
     }
@@ -165,17 +161,19 @@ public class ScientificCalculator extends Calculator {
         public void actionPerformed(ActionEvent countEvent){
         //present the result of the operation or show what has caused an error
 
-            if (TextResultPreparations.countResult(textList).equals("")) {
-                //show error messages
-                calculatorTextField.setText("ERROR");
-                errorMessageTextField.setText(WrongExpressionException.getErrorMessage());
-            }else {
+            try{
                 //present a result
                 ifReady = true;
                 calculatorResultField.setText(TextResultPreparations.countResult(textList));
                 textONP = calculatorResultField.getText();
                 calculatorTextField.setText(textONP);
                 errorMessageTextField.setText("");
+
+            }catch(WrongExpressionException exception){
+                //inform about the error
+                calculatorTextField.setText("ERROR");
+                calculatorResultField.setText("");
+                errorMessageTextField.setText(exception.getMessage());
             }
         }
     }
@@ -209,11 +207,9 @@ public class ScientificCalculator extends Calculator {
                     textList.add("(");
                 }
 
-                //count current result if there is a possibility that the expression is correct
                 calculatorTextField.setText(text);
-                if(!(textList.get(textList.size() - 1).equals("(") || textList.get(textList.size() - 1).equals("+") || textList.get(textList.size() - 1).equals("-") || textList.get(textList.size() - 1).equals("*") ||
-                        textList.get(textList.size() - 1).equals("/") || textList.get(textList.size() - 1).equals("^") || textList.get(textList.size() - 1).equals(sqrt)))
-                    calculatorResultField.setText(TextResultPreparations.countResult(textList));
+                //count current result
+                TextResultPreparations.countCurrentResult(textList, calculatorResultField);
             }
         }
     }

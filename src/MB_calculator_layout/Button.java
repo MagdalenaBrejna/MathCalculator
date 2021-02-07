@@ -14,11 +14,6 @@ public abstract class Button extends JButton implements MouseListener{
     protected Border raisedLevelBorder = BorderFactory.createRaisedBevelBorder();
     protected Border lowerLevelBorder = BorderFactory.createLoweredBevelBorder();
 
-    protected final Color specialColor = new java.awt.Color(245, 197, 174);
-    protected final Color specialColorDark = new java.awt.Color(230, 185, 164);
-
-    protected String buttonName = "";
-
     public Button(String textNameButton, ActionListener actionListenerButton){
         super(textNameButton);
         addActionListener(actionListenerButton);

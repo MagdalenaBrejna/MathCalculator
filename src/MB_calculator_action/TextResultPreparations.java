@@ -1,8 +1,11 @@
 package MB_calculator_action;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class TextResultPreparations {
+
+    private final static String sqrt = "\u221a";
 
     public static int countDots(String text){
     //count number of dots to check if the number is correct (contains max 1 dot)
@@ -37,8 +40,8 @@ public class TextResultPreparations {
         return text;
     }
 
-    public static String countResult(ArrayList<String> textList){
-    //try to create ONP expression and count it. If an exception occurs, it is handled and function returns empty string.
+    public static String countResult(ArrayList<String> textList) throws WrongExpressionException{
+    //try to create ONP expression and count it. If an exception occurs, it is handled and relay further.
 
         ArrayList<String> textAlteredList = new ArrayList<String>();
         String textONP = "";
@@ -50,10 +53,22 @@ public class TextResultPreparations {
                 textONP = ONP.count(textAlteredList);
 
             } catch(WrongExpressionException exception){
-                return "";
+                throw new WrongExpressionException(exception.getMessage());
             }
 
         return textONP;
+    }
+
+    public static void countCurrentResult(ArrayList<String> textList, JTextField resultTextField){
+    //count current result if there is a possibility that the expression is correct. If not set empty String
+
+        if (textList.size() > 0 && !(textList.get(textList.size() - 1).equals("(") || textList.get(textList.size() - 1).equals("+") || textList.get(textList.size() - 1).equals("-") || textList.get(textList.size() - 1).equals("*") ||
+                textList.get(textList.size() - 1).equals("/") || textList.get(textList.size() - 1).equals("^") || textList.get(textList.size() - 1).equals(sqrt)))
+            try{
+                resultTextField.setText(TextResultPreparations.countResult(textList));
+            }catch(WrongExpressionException exception){
+                resultTextField.setText("");
+            }
     }
 
     public static boolean comafault(ArrayList<String> listText, int comaPosition){
