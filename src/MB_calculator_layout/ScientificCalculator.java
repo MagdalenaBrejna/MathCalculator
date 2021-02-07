@@ -35,7 +35,7 @@ public class ScientificCalculator extends Calculator {
 
         fontUpperPanel = new Font("Helvetica", Font.ITALIC, 18);
 
-        //create panels with their features
+        //Create panels with their features.
         centerPanel.setPreferredSize(new Dimension(320,480));
         centerPanel.setLocation(0,300);
 
@@ -51,7 +51,7 @@ public class ScientificCalculator extends Calculator {
         southPanel.setLayout(null);
         add(BorderLayout.SOUTH, southPanel);
 
-        //create label and textField to show information about error if an expression is wrong
+        //Create the label and textField to show information about the error if an expression is incorrect.
         errorMessageLabel = new JLabel(" Error Message");
         errorMessageLabel.setBounds(20, 10, 137, 30);
         errorMessageLabel.setFont(fontUpperPanel);
@@ -67,7 +67,7 @@ public class ScientificCalculator extends Calculator {
         errorMessageTextField.setEditable(false);
         southPanel.add(errorMessageTextField);
 
-        //creating 11 basic buttons of numbers and dot and functional button of equality in the central panel
+        //Create 11 basic buttons of numbers and dot and the functional button of equality in the central panel.
         int dlx = 88, dly = 60, x = 20, y = 20;
 
         basicButtons[0] = new BasicButton("1", x, y, new PressReaction(), centerPanel);
@@ -83,7 +83,7 @@ public class ScientificCalculator extends Calculator {
         basicButtons[9] = new BasicButton("0", 2 * x + dlx, 4 * y + 3 * dly, new PressReaction(), centerPanel);
         basicButtons[10] = new BasicButton(".", 3 * x + 2 * dlx, 4 * y + 3 * dly, new PressReaction(), centerPanel);
 
-        //create 18 functional buttons on right and central panel
+        //Create 18 functional buttons on the right and central panel.
         x = 20;
         y = 20;
         dlx = 60;
@@ -112,17 +112,17 @@ public class ScientificCalculator extends Calculator {
 
     class DELReaction implements ActionListener{
         public void actionPerformed(ActionEvent DELEvent) {
-        //back the expression
+        //Back the expression.
 
-            //checking if there is something to delete
+            //Check if there is something to delete or not.
             if (!text.equals(""))
                 if (calculatorTextField.getText().equals("ERROR")) {
-                    //if the text equals "ERROR", restore text which cause error
+                    //If the text equals "ERROR", restore the text which has caused an error.
                     calculatorTextField.setText(text);
                     errorMessageTextField.setText("");
 
                 } else if (!ifReady) {
-                    //if the expression doesn't cause error but it isn't ready, delete appropriate number of characters
+                    //If the expression doesn't cause an error but it isn't ready, delete appropriate number of characters.
                     String previousText = TextResultPreparations.returnPreviousText(text);
                     calculatorTextField.setText(previousText);
                     if (text.length() - previousText.length() > 1) {
@@ -133,12 +133,12 @@ public class ScientificCalculator extends Calculator {
                     text = previousText;
 
                 } else {
-                    //if the expression is a result, restore expression which gave this result
+                    //If the expression is the result, restore the expression which has given this result.
                     ifReady = false;
                     calculatorTextField.setText(text);
                 }
 
-            //count current result
+            //Count the current result.
             TextResultPreparations.countCurrentResult(textList, calculatorResultField);
 
         }
@@ -146,7 +146,7 @@ public class ScientificCalculator extends Calculator {
 
     class ACReaction implements ActionListener{
         public void actionPerformed(ActionEvent ACEvent){
-        //make everything clear
+        //Make everything clear.
 
             ifReady = false;
             text = "";
@@ -159,10 +159,10 @@ public class ScientificCalculator extends Calculator {
 
     class CountReaction implements ActionListener{
         public void actionPerformed(ActionEvent countEvent){
-        //present the result of the operation or show what has caused an error
+        //Present the result of the operation or show what has caused an error.
 
             try{
-                //present a result
+                //Present the result.
                 ifReady = true;
                 calculatorResultField.setText(TextResultPreparations.countResult(textList));
                 textONP = calculatorResultField.getText();
@@ -170,7 +170,7 @@ public class ScientificCalculator extends Calculator {
                 errorMessageTextField.setText("");
 
             }catch(WrongExpressionException exception){
-                //inform about the error
+                //Inform about the error.
                 calculatorTextField.setText("ERROR");
                 calculatorResultField.setText("");
                 errorMessageTextField.setText(exception.getMessage());
@@ -180,25 +180,33 @@ public class ScientificCalculator extends Calculator {
 
     class PressReaction implements ActionListener {
         public void actionPerformed(ActionEvent pressEvent) {
-        //react to a button
+        //React to a button.
 
             String buttonText = ((JButton) pressEvent.getSource()).getText();
 
-            //if the textField contains a result replace it with a number or join an operation symbol
+            //If the textField contains a result, replace it with a number or join an operation symbol.
             if(ifReady){
                 ifReady = false;
                 if (!(buttonText.equals("+") || buttonText.equals("-") || buttonText.equals("*") || buttonText.equals("/") || buttonText.equals("^"))) {
                     text = "";
                     textList.clear();
                 } else {
-                    text = textONP;
                     textList.clear();
-                    textList.add(text);
+                    if(textONP.charAt(0) == '-'){
+                        textList.add("-");
+                        textONP = textONP.substring(1, textONP.length());
+                        text = textONP;
+                        textList.add(text);
+                        text = "-" + text;
+                    }else{
+                        text = textONP;
+                        textList.add(text);
+                    }
                 }
             }
 
             if(!calculatorTextField.getText().equals("ERROR")) {
-                //add symbol. If it is a function add a bracket too.
+                //Add the symbol. If it's a function, add a bracket too.
                 text += buttonText;
                 textList.add(buttonText);
                 if (buttonText.equals("ln") || buttonText.equals("sin") || buttonText.equals("cos") ||
@@ -209,7 +217,7 @@ public class ScientificCalculator extends Calculator {
 
                 calculatorTextField.setText(text);
 
-                //count current result
+                //Count current result.
                 TextResultPreparations.countCurrentResult(textList, calculatorResultField);
             }
         }

@@ -15,10 +15,11 @@ public class FunctionalButton extends Button{
     private String buttonName = "";
 
     public FunctionalButton(String textNameButton, int xCoordinate, int yCoordinate, int buttonLength, int buttonHeight, ActionListener actionListenerButton, JPanel panel){
+
         super(textNameButton, actionListenerButton);
-        buttonName = textNameButton;
         addMouseListener(this);
         setBounds(xCoordinate, yCoordinate, buttonLength, buttonHeight);
+        buttonName = textNameButton;
         if(buttonName.equals("AC") || buttonName.equals("<<") || buttonName.equals("="))
             this.setBackground(specialColor);
         else
@@ -27,6 +28,8 @@ public class FunctionalButton extends Button{
     }
 
     public void mouseEntered(MouseEvent event){
+        //Change button's color if mouse entered.
+
         if(buttonName.equals("AC") || buttonName.equals("<<") || buttonName.equals("="))
             this.setBackground(specialColorDark);
         else
@@ -34,6 +37,8 @@ public class FunctionalButton extends Button{
     }
 
     public void mouseExited(MouseEvent event){
+        //Change button's color if mouse exited.
+
         if(buttonName.equals("AC") || buttonName.equals("<<") || buttonName.equals("="))
             this.setBackground(specialColor);
         else

@@ -1,7 +1,7 @@
 package MB_calculator_action;
 
 public class WrongExpressionException extends Exception{
-    //exception which occurs when expression is impossible to count. It returns a cause of a fault.
+    //The exception which occurs when expression is impossible to count.
 
     public WrongExpressionException(String message){
         super(message);

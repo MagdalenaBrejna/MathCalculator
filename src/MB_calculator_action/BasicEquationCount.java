@@ -7,7 +7,7 @@ public class BasicEquationCount {
         double number1 = Double.parseDouble(n1), number2 = Double.parseDouble(n2), numberResult = 0;
         String textResult = "";
 
-        //do an operation
+        //Do an operation.
         switch(operationSymbol)
         {
             case("/"):
