@@ -9,7 +9,8 @@ public class MainLayout {
     private JTabbedPane calculatorTypePanel;
 
     public MainLayout(){
-        
+    //create main features of layout
+
         frame = new JFrame("Calculator");
         calculatorTypePanel = new JTabbedPane();
         calculatorTypePanel.setLocation(30,30);

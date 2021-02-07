@@ -4,11 +4,20 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public abstract class Button extends JButton {
+public abstract class Button extends JButton implements MouseListener{
 
-    Font buttonFont = new Font("Helvetica", Font.ITALIC, 18);
-    Border raisedLevelBorder = BorderFactory.createRaisedBevelBorder();
+    protected Font buttonFont = new Font("Helvetica", Font.ITALIC, 18);
+
+    protected Border raisedLevelBorder = BorderFactory.createRaisedBevelBorder();
+    protected Border lowerLevelBorder = BorderFactory.createLoweredBevelBorder();
+
+    protected final Color specialColor = new java.awt.Color(245, 197, 174);
+    protected final Color specialColorDark = new java.awt.Color(230, 185, 164);
+
+    protected String buttonName = "";
 
     public Button(String textNameButton, ActionListener actionListenerButton){
         super(textNameButton);
@@ -16,4 +25,19 @@ public abstract class Button extends JButton {
         setFont(buttonFont);
         setBorder(raisedLevelBorder);
     }
+
+    public void mousePressed(MouseEvent event){
+        this.setBorder(lowerLevelBorder);
+    }
+
+    public void mouseReleased(MouseEvent event){
+        this.setBorder(raisedLevelBorder);
+    }
+
+    public void mouseClicked(MouseEvent event){}
+
+    public abstract void mouseEntered(MouseEvent event);
+
+    public abstract void mouseExited(MouseEvent event);
+
 }

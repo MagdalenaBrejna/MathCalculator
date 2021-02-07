@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class TextResultPreparations {
 
     public static int countDots(String text){
+    //count number of dots to check if the number is correct (contains max 1 dot)
 
         int dotNumber = 0;
         for(int textPosition = 0; textPosition < text.length(); textPosition++)
@@ -14,6 +15,7 @@ public class TextResultPreparations {
     }
 
     public static String returnPreviousText(String text){
+    //check which symbol was added in the last step and delete appropriate number of characters. If the last step is a function with bracket, both of them will be deleted (apart from sqrt)
 
         char lastCharacter = text.charAt(text.length() - 1);
 
@@ -36,6 +38,7 @@ public class TextResultPreparations {
     }
 
     public static String countResult(ArrayList<String> textList){
+    //try to create ONP expression and count it. If an exception occurs, it is handled and function returns empty string.
 
         ArrayList<String> textAlteredList = new ArrayList<String>();
         String textONP = "";
@@ -53,13 +56,32 @@ public class TextResultPreparations {
         return textONP;
     }
 
+    public static boolean comafault(ArrayList<String> listText, int comaPosition){
+    //check wheather or not an user has chosen coma instead of dot
+
+        for(int position = comaPosition - 1; position >= 0; position--) {
+            if (listText.get(position).equals("log"))
+                return false;
+            else if(!(listText.get(position).charAt(0) >= '0' && listText.get(position).charAt(0) <= '9') && !(listText.get(position).charAt(0) == '('))
+                return true;
+        }
+        return true;
+    }
+
     public static ArrayList<String> createEntireNumbers(ArrayList<String> listText) throws WrongExpressionException{
+    //create entire numbers from separate characters
 
         ArrayList<String> newListText = new ArrayList<String>();
         String stringText = "";
 
         for(int listPosition = 0; listPosition < listText.size(); listPosition++) {
 
+            //if user has made a mistake, swap coma and dot
+            if(listText.get(listPosition).charAt(0) == ',')
+                if(comafault(listText, listPosition))
+                    listText.set(listPosition, ".");
+
+            //create entire numbers
             if((listText.get(listPosition).charAt(0) >= '0' && listText.get(listPosition).charAt(0) <= '9') || listText.get(listPosition).equals("."))
                 stringText += listText.get(listPosition);
             else {
@@ -72,6 +94,7 @@ public class TextResultPreparations {
                     newListText.add(stringText);
                     stringText = "";
 
+                //create positive and negative numbers
                 } else if (listPosition > 1 && listPosition < (listText.size() - 2)){
                     if (listText.get(listPosition).equals("-") && listText.get(listPosition - 1).equals("("))
                         stringText += listText.get(listPosition);

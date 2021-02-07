@@ -15,6 +15,7 @@ public class BasicCalculator extends Calculator{
         super();
         centerPanel.setLocation(60,300);
 
+        //create 12 basic buttons of numbers, dot and equality in the central panel
         int dlx = 80, dly = 60, x = 50, y = 20;
 
         basicButtons[0] = new BasicButton("1", x, y, new PressReaction(), centerPanel);
@@ -30,6 +31,7 @@ public class BasicCalculator extends Calculator{
         basicButtons[10] = new BasicButton("0", 2*x + dlx, 4*y + 3*dly, new PressReaction(), centerPanel);
         basicButtons[11] = new BasicButton(".", 3*x + 2*dlx, 4*y + 3*dly, new PressReaction(), centerPanel);
 
+        //create 6 basic functional buttons
         dlx = 60;
         dly = 45;
         x = 37;
@@ -43,6 +45,7 @@ public class BasicCalculator extends Calculator{
         functionalButtons[4] = new FunctionalButton("AC", 2*x + dlx+10, y + dly + 25, dlx, dly, new ACReaction(), centerPanel);
         functionalButtons[5] = new FunctionalButton("<<", 3*x + 2*dlx+7, y + dly + 25, dlx, dly, new DELReaction(), centerPanel);
 
+        //setting a different colour for important functional buttons
         basicButtons[9].setBackground(new java.awt.Color(245, 197, 174));
         functionalButtons[4].setBackground(new java.awt.Color(245, 197, 174));
         functionalButtons[5].setBackground(new java.awt.Color(245, 197, 174));
@@ -50,11 +53,13 @@ public class BasicCalculator extends Calculator{
 
     class CountReaction implements ActionListener{
         public void actionPerformed(ActionEvent e){
-
+        //count result
             number2 = text;
             if(!number1.equals(""))
+                //if there are two numbers count a result
                 result = BasicEquationCount.count(number1, operationSymbol, number2);
             else
+                //if there is only one number, the number is a result
                 result = number2;
             calculatorTextField.setText(result);
             calculatorResultField.setText(result);
@@ -66,7 +71,7 @@ public class BasicCalculator extends Calculator{
 
     class ACReaction implements ActionListener{
         public void actionPerformed(ActionEvent ACEvent){
-
+        //make everything clear
             text = "";
             operationSymbol = "";
             calculatorTextField.setText(text);
@@ -76,6 +81,7 @@ public class BasicCalculator extends Calculator{
 
     class DELReaction implements ActionListener{
         public void actionPerformed(ActionEvent DELEvent){
+        //back the expression
             if(!text.equals("")) {
                 text = text.substring(0, text.length() - 1);
                 calculatorTextField.setText(text);
@@ -85,6 +91,7 @@ public class BasicCalculator extends Calculator{
 
     class PressReaction implements ActionListener{
         public void actionPerformed(ActionEvent pressEvent){
+        //react to a button
 
             if(text.equals(""))
                 calculatorTextField.setText("");
@@ -92,16 +99,19 @@ public class BasicCalculator extends Calculator{
             char character = (pressEvent.getActionCommand()).charAt(0);
             String buttonText = ((JButton)pressEvent.getSource()).getText();
 
+            //if a character is a number, add it to the expression
             if(character >= '0' && character <= '9') {
                 text += character;
                 calculatorTextField.setText(text);
 
+            //if a character is a dot and there aren't any dots in the expression, add a dot to the expression
             }else if(character == '.'){
                 if(!text.contains(".")) {
                     text += character;
                     calculatorTextField.setText(text);
                 }
 
+            //if a character is an mathematical operator set first number of the operation and operator
             }else if(buttonText.equals("/") || buttonText.equals("*") || buttonText.equals("-") || buttonText.equals("+")) {
                 if(!text.equals("")){
                     number1 = text;
