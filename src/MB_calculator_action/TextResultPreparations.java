@@ -121,7 +121,6 @@ public class TextResultPreparations {
 
                 }if(stringText.equals(""))
                     newListText.add(listText.get(listPosition));
-
             }
         }
 
@@ -132,6 +131,10 @@ public class TextResultPreparations {
                 throw new WrongExpressionException("Too many dots in the number.");
             newListText.add(stringText);
         }
+
+        for(int listPosition = 1; listPosition < newListText.size(); listPosition++)
+            if(newListText.get(listPosition - 1).charAt(0) > '0' && newListText.get(listPosition - 1).charAt(0) < '9' && (newListText.get(listPosition).charAt(0) >= 'c' && newListText.get(listPosition).charAt(0) <= 't'))
+                newListText.add(listPosition, "*");
 
         return newListText;
     }

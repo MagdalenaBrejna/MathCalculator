@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 public class BasicCalculator extends Calculator{
 
     private String number1 = "", number2 = "", operationSymbol = "=", result = "";
-    private boolean ifready;
 
     public BasicCalculator(){
 
