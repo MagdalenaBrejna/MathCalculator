@@ -83,6 +83,16 @@ public class TextResultPreparations {
         return true;
     }
 
+    public static int numberOfSymbols(ArrayList<String> list, String searchSymbol){
+        int number = 0;
+
+        for(String symbol : list)
+            if(symbol.equals(searchSymbol))
+                number++;
+
+        return number;
+    }
+
     public static ArrayList<String> createEntireNumbers(ArrayList<String> listText) throws WrongExpressionException{
     //Create entire numbers from separate characters.
 
@@ -133,8 +143,12 @@ public class TextResultPreparations {
         }
 
         for(int listPosition = 1; listPosition < newListText.size(); listPosition++)
-            if(newListText.get(listPosition - 1).charAt(0) > '0' && newListText.get(listPosition - 1).charAt(0) < '9' && (newListText.get(listPosition).charAt(0) >= 'c' && newListText.get(listPosition).charAt(0) <= 't'))
+            if(newListText.get(listPosition - 1).charAt(0) > '0' && newListText.get(listPosition - 1).charAt(0) < '9' && (newListText.get(listPosition).charAt(0) >= 'c' && newListText.get(listPosition).charAt(0) <= 't' ||
+                    newListText.get(listPosition).charAt(0) == '('))
                 newListText.add(listPosition, "*");
+
+        if(numberOfSymbols(newListText, "(") > numberOfSymbols(newListText, ")"))
+            newListText.add(")");
 
         return newListText;
     }

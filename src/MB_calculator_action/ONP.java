@@ -84,9 +84,6 @@ public class ONP {
             }
         }
 
-        if(stackSymbols.contains("("))
-            throw new WrongExpressionException("Lack of ' ) '.");
-
         return textListONP;
     }
 
