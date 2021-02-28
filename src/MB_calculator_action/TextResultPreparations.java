@@ -18,7 +18,8 @@ public class TextResultPreparations {
     }
 
     public static String returnPreviousText(String text){
-    //Check which symbol has been added in the last step and delete appropriate number of characters. If the last step is a function with bracket, both of them will be deleted (apart from sqrt).
+    //Check which symbol has been added in the last step and delete appropriate number of characters.
+    // If the last step is a function with bracket, both of them will be deleted (apart from sqrt).
 
         char lastCharacter = text.charAt(text.length() - 1);
 
