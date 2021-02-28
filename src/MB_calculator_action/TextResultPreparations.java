@@ -94,7 +94,7 @@ public class TextResultPreparations {
     }
 
     public static ArrayList<String> createEntireNumbers(ArrayList<String> listText) throws WrongExpressionException{
-    //Create entire numbers from separate characters.
+    //Create entire numbers from separate characters, prepare expression to deal with negative numbers and lack of operation symbols or ending bracket.
 
         ArrayList<String> newListText = new ArrayList<String>();
         String stringText = "";
@@ -142,11 +142,13 @@ public class TextResultPreparations {
             newListText.add(stringText);
         }
 
+        //If there is no operation symbol between a number and a function or before a bracket, add multiplication symbol between them.
         for(int listPosition = 1; listPosition < newListText.size(); listPosition++)
-            if(newListText.get(listPosition - 1).charAt(0) > '0' && newListText.get(listPosition - 1).charAt(0) < '9' && (newListText.get(listPosition).charAt(0) >= 'c' && newListText.get(listPosition).charAt(0) <= 't' ||
-                    newListText.get(listPosition).charAt(0) == '('))
+            if(newListText.get(listPosition - 1).charAt(0) >= '0' && newListText.get(listPosition - 1).charAt(0) <= '9' && (newListText.get(listPosition).charAt(0) >= 'c' && newListText.get(listPosition).charAt(0) <= 't' ||
+                    newListText.get(listPosition).equals('(') || newListText.get(listPosition).equals(sqrt)))
                 newListText.add(listPosition, "*");
 
+        //If there is no ending bracket, add it to enable counting result.
         if(numberOfSymbols(newListText, "(") > numberOfSymbols(newListText, ")"))
             newListText.add(")");
 
